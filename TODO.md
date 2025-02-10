@@ -1,0 +1,16 @@
+- [X] Depth First Iterator
+- [ ] Breadth First Iterator
+- [ ] Union Find
+- [ ] Components and Component Counts
+- [ ] Eulerian Cycle/Circuit
+- [ ] Path Algorithms
+- [ ] Adjacency Matrix
+- [ ] Laplacian Matrix
+- [ ] Kruskal's Algorithm
+- [ ] Bron-Kerbosch Algorithm
+- [ ] Meta-Information
+- [ ] Edmonds-Karp Algorithm
+- [ ] Isomorphism Existence and Construction
+- [ ] Coloring Algorithms
+- [ ] K-Shortest Disjoint Paths
+- [ ] Boyer-Myrvold Algorithm
