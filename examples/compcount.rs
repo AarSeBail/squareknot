@@ -1,7 +1,7 @@
 use std::{fs::File, io::{BufRead, BufReader}};
 
 use itertools::Itertools;
-use squareknot::{graph::{AbstractGraph, SimpleGraph}, prelude::depth_first::DFSTraversal};
+use squareknot::{graph::{AbstractGraph, SimpleGraph}, prelude::{breadth_first::BFSTraversal, depth_first::DFSTraversal}};
 
 // Iterator over pairs of numbers
 struct PairIterator<B: BufRead> {
@@ -52,4 +52,8 @@ fn main() {
     let dfs = DFSTraversal::full_traversal(&g);
 
     println!("Num Components: {}", dfs.filter(|node| node.depth == 0).count());
+
+    let bfs = BFSTraversal::full_traversal(&g);
+
+    println!("Num Components: {}", bfs.filter(|node| node.depth == 0).count());
 }

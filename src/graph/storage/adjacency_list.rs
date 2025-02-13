@@ -65,9 +65,3 @@ impl Storage for AdjacencyList {
         }
     }
 }
-
-impl AdjacencyList {
-    fn neighbors_ref<'a>(&'a self, vertex: usize) -> &'a [usize] {
-        &self.lists[vertex]
-    }
-}
