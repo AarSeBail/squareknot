@@ -5,19 +5,20 @@
 - [X] Union Find
 - [ ] Components and Component Counts
 - [ ] Eulerian Cycle/Circuit
-- [ ] Path Algorithms
-  - [X] Shortest Path
-  - [ ] Johnson's Algorithm
+- [X] All Pairs Shortest Paths Iterator - Unweighted
 - [ ] Adjacency Matrix
 - [ ] Laplacian Matrix
-- [ ] Kruskal's Algorithm
 - [ ] Bron-Kerbosch Algorithm
-- [ ] Meta-Information
-- [ ] Edmonds-Karp Algorithm
-- [ ] Isomorphism Existence and Construction
+- [ ] Isomorphism Testing and Construction
 - [ ] Coloring Algorithms
 - [ ] K-Shortest Disjoint Paths
 - [ ] Boyer-Myrvold Algorithm
+- [ ] Automorphism Algorithms
+## Directed/Weighted Graphs
+- [ ] Dijkstra's Algorithm
+- [ ] Johnson's Algorithm
+- [ ] Kruskal's Algorithm
+- [ ] Edmonds-Karp Algorithm
 
 # Utilities
 - [ ] Actual `GraphFormat` Error Types

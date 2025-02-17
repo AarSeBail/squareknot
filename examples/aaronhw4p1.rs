@@ -5,8 +5,7 @@ use std::{
 };
 
 use squareknot::{
-    graph::{AbstractGraph, SimpleGraph},
-    io::{dimacs::DimacsFormat, GraphFormat},
+    algorithms::pathing::apsp::APSPIterator, graph::{AbstractGraph, SimpleGraph}, io::{dimacs::DimacsFormat, GraphFormat}
 };
 
 fn main() {
@@ -37,24 +36,17 @@ fn main() {
 
     let mut distances = vec![0; nv * nv];
 
-    let mut bfs = graph.bfs(0);
-
     // It's actually faster without the depth map
     // bfs.add_depth_map();
 
     writeln!(writer, "Shortest Paths:").expect("Could not print.");
-    for u in 0..nv {
-        bfs.restart_at(u);
-        bfs.by_ref().for_each(|_| {});
-        for v in 0..=u {
-            if let Some(path) = bfs.extract_path(v) {
-                if should_print {
-                    writeln!(writer, "{u} -> {v}: {:?}", path).expect("Could not print.");
-                }
-                distances[nv * u + v] = path.len() as i64;
-                distances[nv * v + u] = path.len() as i64;
-            }
+
+    for (u, v, path) in APSPIterator::new(&graph) {
+        if should_print {
+            writeln!(writer, "{u} -> {v}: {:?}", path).expect("Could not print.");
         }
+        distances[nv * u + v] = path.len();
+        distances[nv * v + u] = path.len();
     }
 
     if should_print {
@@ -63,7 +55,10 @@ fn main() {
             for v in 0..nv {
                 if distances[nv * u + v] > 0 {
                     write!(writer, "{} ", distances[nv * u + v] - 1).expect("Could not print.");
-                } else {
+                } else if u == v {
+                    write!(writer, "0 ").expect("Could not print.");
+                }else {
+                    
                     write!(writer, "- ").expect("Could not print.");
                 }
             }

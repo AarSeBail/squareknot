@@ -46,13 +46,13 @@ fn main() {
     for u in 0..nv {
         bfs.restart_at(u);
         bfs.by_ref().for_each(|_| {});
-        for v in 0..=u {
+        for v in 0..u {
             if let Some(path) = bfs.extract_path(v) {
                 if should_print {
                     writeln!(writer, "{u} -> {v}: {:?}", path).expect("Could not print.");
                 }
-                distances[nv * u + v] = path.len() as i64;
-                distances[nv * v + u] = path.len() as i64;
+                distances[nv * u + v] = path.len();
+                distances[nv * v + u] = path.len();
             }
         }
     }
@@ -63,7 +63,10 @@ fn main() {
             for v in 0..nv {
                 if distances[nv * u + v] > 0 {
                     write!(writer, "{} ", distances[nv * u + v] - 1).expect("Could not print.");
-                } else {
+                } else if u == v {
+                    write!(writer, "0 ").expect("Could not print.");
+                }else {
+                    
                     write!(writer, "- ").expect("Could not print.");
                 }
             }
