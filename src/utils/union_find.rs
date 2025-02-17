@@ -1,0 +1,71 @@
+/*
+// Find the parent node
+fn find(mut u: usize, uf: &mut [usize]) -> usize {
+    while uf[u] != u {
+        // Path Compression
+        uf[u] = uf[uf[u]];
+        u = uf[u];
+    }
+    u
+}
+
+// Join two components by joining their root nodes
+fn union(u: usize, v: usize, uf: &mut [usize], size: &mut [usize]) {
+    let root_u = find(u, uf);
+    let root_v = find(v, uf);
+    if root_u != root_v {
+        // The root of the component with the largest *order* is the new root
+        // Slightly slower in small cases, but significantly faster in large cases
+        if size[root_u] < size[root_v] {
+            uf[root_u] = root_v;
+            size[root_v] += size[root_u];
+        } else {
+            uf[root_v] = root_u;
+            size[root_u] += size[root_v];
+        }
+    }
+}
+*/
+
+pub struct UnionFind {
+    uf: Vec<usize>,
+    rank: Vec<usize>,
+}
+
+impl UnionFind {
+    pub fn new(size: usize) -> Self {
+        Self {
+            uf: (0..size).collect(),
+            rank: vec![1; size],
+        }
+    }
+
+    fn mut_find(&mut self, mut u: usize) -> usize {
+        while self.uf[u] != u {
+            // Path Compression
+            self.uf[u] = self.uf[self.uf[u]];
+            u = self.uf[u];
+        }
+        u
+    }
+
+    pub fn find(&self, u: usize) -> usize {
+        self.uf[u]
+    }
+
+    pub fn union(&mut self, u: usize, v: usize) {
+        let root_u = self.mut_find(u);
+        let root_v = self.mut_find(v);
+        if root_u != root_v {
+            // The root of the component with the largest *order* is the new root
+            // Slightly slower in small cases, but significantly faster in large cases
+            if self.rank[root_u] < self.rank[root_v] {
+                self.uf[root_u] = root_v;
+                self.rank[root_v] += self.rank[root_u];
+            } else {
+                self.uf[root_v] = root_u;
+                self.rank[root_u] += self.rank[root_v];
+            }
+        }
+    }
+}

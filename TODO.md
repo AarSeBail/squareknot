@@ -1,9 +1,13 @@
+# Algorithms
 - [X] Depth First Iterator
-- [ ] Breadth First Iterator
-- [ ] Union Find
+- [X] Breadth First Iterator
+- [ ] Greedy Coloring Algorithms
+- [X] Union Find
 - [ ] Components and Component Counts
 - [ ] Eulerian Cycle/Circuit
 - [ ] Path Algorithms
+  - [X] Shortest Path
+  - [ ] Johnson's Algorithm
 - [ ] Adjacency Matrix
 - [ ] Laplacian Matrix
 - [ ] Kruskal's Algorithm
@@ -14,3 +18,16 @@
 - [ ] Coloring Algorithms
 - [ ] K-Shortest Disjoint Paths
 - [ ] Boyer-Myrvold Algorithm
+
+# Utilities
+- [ ] Actual `GraphFormat` Error Types
+- [ ] Implement Modified DIMACS Writer
+- [ ] Implement Real DIMACS Formatting
+- [ ] Augment Graphs with Auxilliary Data Structures
+  - [ ] How to do this w/ zero cost?
+  - [ ] Use this to abstract away degrees?
+- [ ] Better Ordering Abstraction
+- [ ] Documentation
+- [ ] Integration Testing
+- [ ] Conversion b/w Storage Types
+- [ ] AI Generated Logo

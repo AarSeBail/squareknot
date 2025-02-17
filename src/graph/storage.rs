@@ -2,7 +2,19 @@ pub mod adjacency_list;
 
 pub enum Neighbors<'a> {
     Owned(Vec<usize>),
-    Referenced(&'a [usize])
+    Referenced(&'a [usize]),
+}
+
+impl<'a> Neighbors<'a> {
+    pub fn as_slice<'b>(&'b self) -> &'a [usize]
+    where
+        'b: 'a,
+    {
+        match self {
+            Self::Owned(v) => &v,
+            Self::Referenced(x) => x,
+        }
+    }
 }
 
 /// The backing storage structure for a graph.
@@ -10,7 +22,7 @@ pub enum Neighbors<'a> {
 pub trait Storage: Sized {
     /// Returns an instance with no vertices.
     fn empty() -> Self;
-    
+
     /// Returns an instance with `nv` isolated vertices.
     fn with_capacity(nv: usize) -> Self;
 
@@ -19,6 +31,10 @@ pub trait Storage: Sized {
 
     /// Adds the (directed) edge `from -> to`.
     fn add_edge(&mut self, from: usize, to: usize);
+
+    /* fn rem_edge(&mut self, from: usize, to: usize);
+
+    fn add_vertex(&mut self) -> usize; */
 
     /// Returns the number of edges into `vertex`.
     fn in_degree(&self, vertex: usize) -> usize;
@@ -33,10 +49,10 @@ pub trait Storage: Sized {
     fn neighbors_owned<'a>(&'a self, vertex: usize) -> Vec<usize> {
         match self.neighbors(vertex) {
             Neighbors::Owned(ret) => ret,
-            Neighbors::Referenced(ret) => ret.to_vec()
+            Neighbors::Referenced(ret) => ret.to_vec(),
         }
     }
-    
+
     fn size(&self) -> usize;
     fn order(&self) -> usize;
 
