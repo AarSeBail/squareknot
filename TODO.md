@@ -19,16 +19,22 @@
 - [ ] Johnson's Algorithm
 - [ ] Kruskal's Algorithm
 - [ ] Edmonds-Karp Algorithm
+## Topological Structures
+- [ ] Gluing maps of polygons
+- [ ] More general structures?
 
 # Utilities
 - [ ] Actual `GraphFormat` Error Types
 - [ ] Implement Modified DIMACS Writer
 - [ ] Implement Real DIMACS Formatting
 - [ ] Augment Graphs with Auxilliary Data Structures
-  - [ ] How to do this w/ zero cost?
-  - [ ] Use this to abstract away degrees?
+  - [ ] Q: How to do this w/ zero cost?
+  - [ ] Q: Use this to abstract away degrees?
 - [ ] Better Ordering Abstraction
+- [ ] Abstract Partial Mutability
 - [ ] Documentation
+- [ ] Feature flags for auxilliary data, weighted graphs, etc.
+  - [ ] Additional feature flags? 
 - [ ] Integration Testing
 - [ ] Conversion b/w Storage Types
 - [ ] AI Generated Logo

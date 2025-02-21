@@ -88,15 +88,15 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
                 }
                 Some(path)
             } else {
-                let mut path = VecDeque::new();
-                path.push_back(vertex);
+                let mut path = Vec::new();
+                path.push(vertex);
 
                 while self.parents[vertex] != vertex {
                     vertex = self.parents[vertex];
-                    path.push_front(vertex);
+                    path.push(vertex);
                 }
 
-                Some(path.into_iter().collect())
+                Some(path.into_iter().rev().collect())
             }
         }
     }

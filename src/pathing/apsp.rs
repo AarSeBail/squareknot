@@ -1,5 +1,8 @@
 use crate::{graph::AbstractGraph, prelude::breadth_first::BFSTraversal};
 
+
+/// All Pairs Shortest Paths iterator
+/// Iterates over all pairs of connected vertices and their shortest paths
 pub struct APSPIterator<'a, G: AbstractGraph> {
     bfs: BFSTraversal<'a, G>,
     nv: usize,

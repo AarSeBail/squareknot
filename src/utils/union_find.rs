@@ -1,32 +1,4 @@
-/*
-// Find the parent node
-fn find(mut u: usize, uf: &mut [usize]) -> usize {
-    while uf[u] != u {
-        // Path Compression
-        uf[u] = uf[uf[u]];
-        u = uf[u];
-    }
-    u
-}
-
-// Join two components by joining their root nodes
-fn union(u: usize, v: usize, uf: &mut [usize], size: &mut [usize]) {
-    let root_u = find(u, uf);
-    let root_v = find(v, uf);
-    if root_u != root_v {
-        // The root of the component with the largest *order* is the new root
-        // Slightly slower in small cases, but significantly faster in large cases
-        if size[root_u] < size[root_v] {
-            uf[root_u] = root_v;
-            size[root_v] += size[root_u];
-        } else {
-            uf[root_v] = root_u;
-            size[root_u] += size[root_v];
-        }
-    }
-}
-*/
-
+/// A standard implementation of union-find
 pub struct UnionFind {
     uf: Vec<usize>,
     rank: Vec<usize>,
