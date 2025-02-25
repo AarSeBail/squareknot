@@ -14,7 +14,6 @@ pub struct DFSTraversal<'a, S: Storage> {
     rooted: bool,
     next_vertex: usize,
     started: bool,
-    depth_map: Option<Vec<usize>>,
 }
 
 impl<'a, S: Storage> DFSTraversal<'a, S> {
@@ -32,7 +31,6 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
             rooted: true,
             next_vertex: 0,
             started: false,
-            depth_map: None
         }
     }
 
@@ -45,13 +43,7 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
             rooted: false,
             next_vertex: 0,
             started: false,
-            depth_map: None
         }
-    }
-
-    /// Return the vector of parent maps.
-    pub fn extract_parents(self) -> Vec<usize> {
-        self.parents
     }
 
     /// Extracts the path to a vertex.
@@ -62,29 +54,15 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
         if self.parents[vertex] == usize::MAX {
             None
         } else {
-            // TODO: Compare performance of implementations.
-            // If depth maps do not help much, consider removing them.
-            // Note that this will mostly be called at low depths.
-            if let Some(dm) = &self.depth_map {
-                let mut path = vec![vertex; dm[vertex] + 1];
-                let mut i = path.len() - 2;
-                while self.parents[vertex] != vertex {
-                    vertex = self.parents[vertex];
-                    path[i] = vertex;
-                    i -= 1;
-                }
-                Some(path)
-            } else {
-                let mut path = Vec::new();
+            let mut path = Vec::new();
+            path.push(vertex);
+
+            while self.parents[vertex] != vertex {
+                vertex = self.parents[vertex];
                 path.push(vertex);
-
-                while self.parents[vertex] != vertex {
-                    vertex = self.parents[vertex];
-                    path.push(vertex);
-                }
-
-                Some(path.into_iter().rev().collect())
             }
+
+            Some(path.into_iter().rev().collect())
         }
     }
 
@@ -99,9 +77,11 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
             vertex: root,
             depth: 0,
         });
-        if let Some(dm) = &mut self.depth_map {
-            dm[root] = 0;
-        }
+    }
+
+    /// Return the vector of parent maps.
+    pub fn extract_parents(self) -> Vec<usize> {
+        self.parents
     }
 }
 

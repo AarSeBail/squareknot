@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, usize};
+use std::collections::VecDeque;
 
 use crate::graph::AbstractGraph;
 
@@ -16,7 +16,6 @@ pub struct BFSTraversal<'a, G: AbstractGraph> {
     rooted: bool,
     next_vertex: usize,
     started: bool,
-    depth_map: Option<Vec<usize>>,
 }
 
 impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
@@ -34,7 +33,6 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
             rooted: true,
             next_vertex: 0,
             started: false,
-            depth_map: None,
         }
     }
 
@@ -47,18 +45,6 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
             rooted: false,
             next_vertex: 0,
             started: false,
-            depth_map: None,
-        }
-    }
-
-    /// Must be called before the iterator starts.
-    /// Will create a depth map which will speed up certain operations.
-    pub fn add_depth_map(&mut self) -> bool {
-        if self.started {
-            false
-        } else {
-            self.depth_map = Some(vec![0; self.parents.len()]);
-            true
         }
     }
 
@@ -78,26 +64,15 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
             // TODO: Compare performance of implementations.
             // If depth maps do not help much, consider removing them.
             // Note that this will mostly be called at low depths.
-            if let Some(dm) = &self.depth_map {
-                let mut path = vec![vertex; dm[vertex] + 1];
-                let mut i = path.len() - 2;
-                while self.parents[vertex] != vertex {
-                    vertex = self.parents[vertex];
-                    path[i] = vertex;
-                    i -= 1;
-                }
-                Some(path)
-            } else {
-                let mut path = Vec::new();
+            let mut path = Vec::new();
+            path.push(vertex);
+
+            while self.parents[vertex] != vertex {
+                vertex = self.parents[vertex];
                 path.push(vertex);
-
-                while self.parents[vertex] != vertex {
-                    vertex = self.parents[vertex];
-                    path.push(vertex);
-                }
-
-                Some(path.into_iter().rev().collect())
             }
+
+            Some(path.into_iter().rev().collect())
         }
     }
 
@@ -112,13 +87,6 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
             vertex: root,
             depth: 0,
         });
-        if let Some(dm) = &mut self.depth_map {
-            dm[root] = 0;
-        }
-        // This doesn't need to be reset
-        /*if let Some(v) = &mut self.depth_map {
-            v.iter_mut().for_each(|x| *x = usize::MAX);
-        }*/
     }
 }
 
@@ -139,9 +107,6 @@ impl<'a, G: AbstractGraph> Iterator for BFSTraversal<'a, G> {
                             vertex: neighbor,
                             depth: current_node.depth + 1,
                         });
-                        if let Some(dm) = &mut self.depth_map {
-                            dm[neighbor] = current_node.depth + 1;
-                        }
                     }
                 }
                 return Some(current_node);
