@@ -1,4 +1,4 @@
-use crate::graph::{storage::Storage, AbstractGraph, UnGraph};
+use crate::graph::AbstractGraph;
 
 #[derive(Debug)]
 pub struct DFSNode {
@@ -7,8 +7,8 @@ pub struct DFSNode {
 }
 
 /// Iterate over vertices using depth first search.
-pub struct DFSTraversal<'a, S: Storage> {
-    graph: &'a UnGraph<S>,
+pub struct DFSTraversal<'a, G: AbstractGraph> {
+    graph: &'a G,
     parents: Vec<usize>,
     stack: Vec<DFSNode>,
     rooted: bool,
@@ -16,9 +16,9 @@ pub struct DFSTraversal<'a, S: Storage> {
     started: bool,
 }
 
-impl<'a, S: Storage> DFSTraversal<'a, S> {
+impl<'a, G: AbstractGraph> DFSTraversal<'a, G> {
     /// Traverse starting from root.
-    pub fn from_root(graph: &'a UnGraph<S>, root: usize) -> Self {
+    pub fn from_root(graph: &'a G, root: usize) -> Self {
         let mut parents = vec![usize::MAX; graph.size()];
         parents[root] = root;
         Self {
@@ -35,7 +35,7 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
     }
 
     /// Iterate over `0..nv` and traverse starting from any unvisited vertices.
-    pub fn full_traversal(graph: &'a UnGraph<S>) -> Self {
+    pub fn full_traversal(graph: &'a G) -> Self {
         Self {
             graph,
             parents: vec![usize::MAX; graph.size()],
@@ -85,7 +85,7 @@ impl<'a, S: Storage> DFSTraversal<'a, S> {
     }
 }
 
-impl<'a, S: Storage> Iterator for DFSTraversal<'a, S> {
+impl<'a, G: AbstractGraph> Iterator for DFSTraversal<'a, G> {
     type Item = DFSNode;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -94,7 +94,7 @@ impl<'a, S: Storage> Iterator for DFSTraversal<'a, S> {
         loop {
             if let Some(current_node) = self.stack.pop() {
                 // Accept both types of Neighbors and create a slice from them.
-                let neighbors = self.graph.storage.neighbors(current_node.vertex);
+                let neighbors = self.graph.neighbors(current_node.vertex);
                 /*let refd = match &neighbors {
                     Neighbors::Owned(v) => v,
                     Neighbors::Referenced(v) => *v,

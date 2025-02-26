@@ -2,10 +2,6 @@
 
 use crate::graph::AbstractGraph;
 
-pub mod edge_weights;
-pub mod vertex_degree;
-pub mod vertex_weights;
-
 /// An trait for structures which represent metadata about a graph
 /// While these most often implement `VertexAttribute` or `EdgeAttribute`,
 /// they are not required to

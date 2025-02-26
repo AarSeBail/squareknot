@@ -4,7 +4,7 @@ pub mod undirected;
 pub use storage::Neighbors;
 use storage::{adjacency_list::AdjacencyList, *};
 
-use crate::prelude::breadth_first::BFSTraversal;
+use crate::{prelude::breadth_first::BFSTraversal, DFSTraversal};
 
 // Fundamental types
 pub struct UnGraph<S: Storage> {
@@ -35,5 +35,14 @@ pub trait AbstractGraph: Sized {
     fn neighbors<'a>(&'a self, vertex: usize) -> Neighbors<'a>;
     fn bfs<'a>(&'a self, root: usize) -> BFSTraversal<'a, Self> {
         BFSTraversal::from_root(self, root)
+    }
+    fn full_bfs<'a>(&'a self) -> BFSTraversal<'a, Self> {
+        BFSTraversal::full_traversal(self)
+    }
+    fn dfs<'a>(&'a self, root: usize) -> DFSTraversal<'a, Self> {
+        DFSTraversal::from_root(self, root)
+    }
+    fn full_dfs<'a>(&'a self) -> DFSTraversal<'a, Self> {
+        DFSTraversal::full_traversal(self)
     }
 }

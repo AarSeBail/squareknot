@@ -1,0 +1,1 @@
+- [ ] Full BFS/DFS traversal is bugged (see `comp_count`)

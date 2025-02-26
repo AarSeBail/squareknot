@@ -34,7 +34,9 @@
 - [ ] Abstract Partial Mutability
 - [ ] Documentation
 - [ ] Feature flags for auxilliary data, weighted graphs, etc.
-  - [ ] Additional feature flags? 
+  - [ ] Additional feature flags?
 - [ ] Integration Testing
+- [ ] Having `neighbor_iter` instead of `neighbors` would be faster for adjacency matrices, due to no heap allocation.
+  - [ ] Q: How to do the types for this? Probably use associated types
 - [ ] Conversion b/w Storage Types
 - [ ] AI Generated Logo
