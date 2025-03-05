@@ -3,7 +3,7 @@ use crate::{
     prelude::Storage,
 };
 
-pub fn greedy_coloring<'a, S: Storage, I: Iterator<Item = &'a usize>>(
+/* pub fn greedy_coloring<'a, S: Storage, I: Iterator<Item = &'a usize>>(
     graph: &UnGraph<S>,
     order: I,
 ) -> (usize, Vec<usize>) {
@@ -47,3 +47,4 @@ pub fn greedy_coloring<'a, S: Storage, I: Iterator<Item = &'a usize>>(
 
     (chrom, coloring)
 }
+*/

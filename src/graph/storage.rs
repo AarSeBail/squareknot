@@ -20,6 +20,8 @@ impl<'a> Neighbors<'a> {
 /// The backing storage structure for a graph.
 /// All implementations must support directed multigraphs.
 pub trait Storage: Sized {
+    // type NeighborIter: Iterator<Item=usize>;
+
     /// Returns an instance with no vertices.
     fn empty() -> Self;
 
@@ -45,13 +47,13 @@ pub trait Storage: Sized {
 
     /// Returns the neighbors of `vertex`
     /// i.e. all vertices `u` such that the storage contains the edge `vertex -> u`
-    fn neighbors<'a>(&'a self, vertex: usize) -> Neighbors<'a>;
-    fn neighbors_owned<'a>(&'a self, vertex: usize) -> Vec<usize> {
+    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a;
+    /*fn neighbors_owned<'a>(&'a self, vertex: usize) -> Vec<usize> {
         match self.neighbors(vertex) {
             Neighbors::Owned(ret) => ret,
             Neighbors::Referenced(ret) => ret.to_vec(),
         }
-    }
+    }*/
 
     fn size(&self) -> usize;
     fn order(&self) -> usize;

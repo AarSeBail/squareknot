@@ -1,5 +1,6 @@
 use super::{Neighbors, Storage};
 
+#[derive(Clone)]
 pub struct AdjacencyNode {
     pub edges: Vec<usize>,
     pub out_degree: usize,
@@ -59,8 +60,9 @@ impl Storage for AdjacencyList {
         self.lists[vertex].out_degree
     }
 
-    fn neighbors<'a>(&'a self, vertex: usize) -> Neighbors<'a> {
-        Neighbors::Referenced(&self.lists[vertex].edges)
+    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a {
+        // Neighbors::Referenced(&self.lists[vertex].edges)
+        self.lists[vertex].edges.iter().cloned()
     }
 
     fn size(&self) -> usize {
