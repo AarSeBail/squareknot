@@ -112,23 +112,6 @@ impl<'a, G: AbstractGraph> Iterator for BFSTraversal<'a, G> {
                 return Some(current_node);
             } else if self.rooted {
                 return None; // Only traverse root component
-            } else {
-                // Find next unvisited vertex for full traversal
-                while self.next_vertex < self.graph.size() {
-                    let v = self.next_vertex;
-                    self.next_vertex += 1;
-                    if self.parents[v] == usize::MAX {
-                        self.parents[v] = v;
-                        self.queue.push_back(BFSNode {
-                            vertex: v,
-                            depth: 0,
-                        });
-                        break;
-                    }
-                }
-                if self.queue.is_empty() {
-                    return None;
-                }
             }
         }
     }

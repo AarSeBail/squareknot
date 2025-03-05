@@ -19,7 +19,7 @@ pub struct DFSTraversal<'a, G: AbstractGraph> {
 impl<'a, G: AbstractGraph> DFSTraversal<'a, G> {
     /// Traverse starting from root.
     pub fn from_root(graph: &'a G, root: usize) -> Self {
-        let mut parents = vec![usize::MAX; graph.size()];
+        let mut parents = vec![usize::MAX; graph.order()];
         parents[root] = root;
         Self {
             graph,
@@ -38,7 +38,7 @@ impl<'a, G: AbstractGraph> DFSTraversal<'a, G> {
     pub fn full_traversal(graph: &'a G) -> Self {
         Self {
             graph,
-            parents: vec![usize::MAX; graph.size()],
+            parents: vec![usize::MAX; graph.order()],
             stack: Vec::new(),
             rooted: false,
             next_vertex: 0,
@@ -113,23 +113,6 @@ impl<'a, G: AbstractGraph> Iterator for DFSTraversal<'a, G> {
                 return Some(current_node);
             } else if self.rooted {
                 return None; // Only traverse root componentited
-            } else {
-                // Find next unvisited vertex for full traversal
-                while self.next_vertex < self.graph.size() {
-                    let v = self.next_vertex;
-                    self.next_vertex += 1;
-                    if self.parents[v] == usize::MAX {
-                        self.parents[v] = v;
-                        self.stack.push(DFSNode {
-                            vertex: v,
-                            depth: 0,
-                        });
-                        break;
-                    }
-                }
-                if self.stack.is_empty() {
-                    return None;
-                }
             }
         }
     }
