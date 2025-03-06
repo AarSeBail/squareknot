@@ -1,7 +1,6 @@
 pub mod storage;
 pub mod undirected;
 
-pub use storage::Neighbors;
 use storage::{adjacency_list::AdjacencyList, *};
 
 use crate::{prelude::breadth_first::BFSTraversal, DFSTraversal};
@@ -32,7 +31,7 @@ pub trait AbstractGraph: Sized {
     fn add_edge_unchecked(&mut self, u: usize, v: usize);
     /// Add the edge `(u, v)` to the graph.
     fn has_edge(&self, u: usize, v: usize) -> bool;
-    fn neighbors<'a>(&'a self, vertex: usize) -> Neighbors<'a>;
+    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a;
     fn bfs<'a>(&'a self, root: usize) -> BFSTraversal<'a, Self> {
         BFSTraversal::from_root(self, root)
     }

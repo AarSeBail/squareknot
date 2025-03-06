@@ -1,13 +1,12 @@
 use crate::{graph::AbstractGraph, prelude::breadth_first::BFSTraversal};
 
-
 /// All Pairs Shortest Paths iterator
 /// Iterates over all pairs of connected vertices and their shortest paths
 pub struct APSPIterator<'a, G: AbstractGraph> {
     bfs: BFSTraversal<'a, G>,
     nv: usize,
     u: usize,
-    v: usize
+    v: usize,
 }
 
 impl<'a, G: AbstractGraph> APSPIterator<'a, G> {
@@ -18,7 +17,7 @@ impl<'a, G: AbstractGraph> APSPIterator<'a, G> {
             bfs,
             nv: graph.order(),
             u: 0,
-            v: 0
+            v: 0,
         }
     }
 }
@@ -29,7 +28,7 @@ impl<'a, G: AbstractGraph> Iterator for APSPIterator<'a, G> {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             if self.u >= self.nv {
-                break
+                break;
             }
             if self.v >= self.u {
                 self.v = 0;
