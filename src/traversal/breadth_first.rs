@@ -100,7 +100,7 @@ impl<'a, G: AbstractGraph> Iterator for BFSTraversal<'a, G> {
             if let Some(current_node) = self.queue.pop_front() {
                 let neighbors = self.graph.neighbors(current_node.vertex);
 
-                for &neighbor in neighbors.as_slice().iter() {
+                for neighbor in neighbors {
                     if self.parents[neighbor] == usize::MAX {
                         self.parents[neighbor] = current_node.vertex;
                         self.queue.push_back(BFSNode {

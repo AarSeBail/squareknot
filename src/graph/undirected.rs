@@ -50,7 +50,7 @@ impl<S: Storage> AbstractGraph for UnGraph<S> {
         self.storage.has_edge(u, v)
     }
 
-    fn neighbors<'a>(&'a self, vertex: usize) -> crate::prelude::Neighbors<'a> {
+    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a {
         self.storage.neighbors(vertex)
     }
 }

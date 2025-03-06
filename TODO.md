@@ -36,7 +36,10 @@
 - [ ] Feature flags for auxilliary data, weighted graphs, etc.
   - [ ] Additional feature flags?
 - [ ] Integration Testing
-- [ ] Having `neighbor_iter` instead of `neighbors` would be faster for adjacency matrices, due to no heap allocation.
-  - [ ] Q: How to do the types for this? Probably use associated types
+- [X] Having `neighbor_iter` instead of `neighbors` would be faster for adjacency matrices, due to no heap allocation.
+  - [X] Q: How to do the types for this? Probably use associated types... A: Just use ``impl Iterator<Item = usize>``.
 - [ ] Conversion b/w Storage Types
 - [ ] AI Generated Logo
+
+# Quandaries
+- [ ] The new neighbor functions do not support .rev and other `DoubleEndedIterator` operations. This messes with the expected order of BFS. In all fairness, neighborhoods might best be described as unordered unless an order is induced.

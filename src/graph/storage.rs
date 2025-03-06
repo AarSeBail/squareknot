@@ -1,22 +1,5 @@
 pub mod adjacency_list;
 
-pub enum Neighbors<'a> {
-    Owned(Vec<usize>),
-    Referenced(&'a [usize]),
-}
-
-impl<'a> Neighbors<'a> {
-    pub fn as_slice<'b>(&'b self) -> &'a [usize]
-    where
-        'b: 'a,
-    {
-        match self {
-            Self::Owned(v) => &v,
-            Self::Referenced(x) => x,
-        }
-    }
-}
-
 /// The backing storage structure for a graph.
 /// All implementations must support directed multigraphs.
 pub trait Storage: Sized {
@@ -45,13 +28,7 @@ pub trait Storage: Sized {
 
     /// Returns the neighbors of `vertex`
     /// i.e. all vertices `u` such that the storage contains the edge `vertex -> u`
-    fn neighbors<'a>(&'a self, vertex: usize) -> Neighbors<'a>;
-    fn neighbors_owned<'a>(&'a self, vertex: usize) -> Vec<usize> {
-        match self.neighbors(vertex) {
-            Neighbors::Owned(ret) => ret,
-            Neighbors::Referenced(ret) => ret.to_vec(),
-        }
-    }
+    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a;
 
     fn size(&self) -> usize;
     fn order(&self) -> usize;

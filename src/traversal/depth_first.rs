@@ -101,7 +101,7 @@ impl<'a, G: AbstractGraph> Iterator for DFSTraversal<'a, G> {
                 };*/
                 // Push neighbors in reverse order
                 // This ensures that traversal order matches the recursive order
-                for &neighbor in neighbors.as_slice().iter().rev() {
+                for neighbor in neighbors {
                     if self.parents[neighbor] == usize::MAX {
                         self.parents[neighbor] = current_node.vertex;
                         self.stack.push(DFSNode {
