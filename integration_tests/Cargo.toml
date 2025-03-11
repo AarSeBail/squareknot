@@ -1,0 +1,9 @@
+[package]
+name = "integration_tests"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+squareknot_core = { path = "../crates/squareknot_core" }
+squareknot_traversal = { path = "../crates/squareknot_traversal" }
+squareknot_io = { path = "../crates/squareknot_io" }

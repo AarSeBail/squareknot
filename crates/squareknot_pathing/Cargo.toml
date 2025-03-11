@@ -1,0 +1,8 @@
+[package]
+name = "squareknot_pathing"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+squareknot_core = { path = "../squareknot_core" }
+squareknot_traversal = { path = "../squareknot_traversal" }
