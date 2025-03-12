@@ -3,14 +3,14 @@ use squareknot_traversal::{BFSGraph, BFSTraversal};
 
 /// All Pairs Shortest Paths iterator
 /// Iterates over all pairs of connected vertices and their shortest paths
-pub struct APSPIterator<'a, G: AbstractGraph> {
+pub struct APSPIterator<'a, G: AbstractGraph<VertexLabel = usize>> {
     bfs: BFSTraversal<'a, G>,
     nv: usize,
     u: usize,
     v: usize,
 }
 
-impl<'a, G: AbstractGraph> APSPIterator<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> APSPIterator<'a, G> {
     pub fn new(graph: &'a G) -> Self {
         let mut bfs = graph.bfs(0);
         bfs.by_ref().for_each(|_| {});
@@ -23,7 +23,7 @@ impl<'a, G: AbstractGraph> APSPIterator<'a, G> {
     }
 }
 
-impl<'a, G: AbstractGraph> Iterator for APSPIterator<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for APSPIterator<'a, G> {
     type Item = (usize, usize, Vec<usize>);
 
     fn next(&mut self) -> Option<Self::Item> {

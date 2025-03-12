@@ -13,9 +13,9 @@ pub trait VertexAttribute: Attribute {}
 
 pub trait EdgeAttribute: Attribute {}
 
-pub struct MetaGraph<A: Attribute, G: AbstractGraph> {
+pub struct _MetaGraph<A: Attribute, G: AbstractGraph> {
     _graph: G,
     _attribute: A,
 }
 
-impl<A: Attribute, G: AbstractGraph> MetaGraph<A, G> {}
+impl<A: Attribute, G: AbstractGraph> _MetaGraph<A, G> {}

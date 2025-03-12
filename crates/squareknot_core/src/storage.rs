@@ -1,59 +1,68 @@
+use std::hash::Hash;
+
 pub mod adjacency_list;
 pub use adjacency_list::*;
 
-/// The backing storage structure for a graph.
-/// All implementations must support directed multigraphs.
+/// A trait which, for the most part, mirrors [`AbstractGraph`]
+///
+/// This provides an extra layer of abstraction, allowing the reuse ofstorage code for both directed and undirected graphs.
+///
+/// This also allows graphs using this trait to be backend independent, allowing them to be reusable components as well.
+///
+/// Accordingly this trait is intended to support all such cases.
+///
+/// It is possible to support only one case (e.g. a `Storage` implementation for only undirected graphs), however this is undefined behavior and will not be explicitly supported.
 pub trait Storage: Sized {
-    /// Returns an instance with no vertices.
-    fn empty() -> Self;
+    /// A label for vertices.
+    ///
+    /// See [`AbstractGraph::VertexLabel`]
+    type VertexLabel: Copy + Hash;
 
-    /// Returns an instance with `nv` isolated vertices.
-    fn with_capacity(nv: usize) -> Self;
+    // Constructors
+    /// Construct storage for a graph on `nv` vertices with no edges.
+    fn empty(nv: usize) -> Self;
 
-    /// Returns `true` if the graph contains the edge `from -> to`.
-    fn has_edge(&self, from: usize, to: usize) -> bool;
+    // Attributes
+    /// Return the number of vertex labels in storage.
+    fn num_v_labels(&self) -> usize;
 
-    /// Adds the (directed) edge `from -> to`.
-    fn add_edge(&mut self, from: usize, to: usize);
-
-    /* fn rem_edge(&mut self, from: usize, to: usize);
-
-    fn add_vertex(&mut self) -> usize; */
-
-    /// Returns the number of edges into `vertex`.
-    fn in_degree(&self, vertex: usize) -> usize;
-
-    /// Returns the number of edges out of `vertex`.
-    /// This is sometimes faster than in_degree. Prefer this if ``in_degree = out_degree``.
-    fn out_degree(&self, vertex: usize) -> usize;
-
-    /// Returns the neighbors of `vertex`
-    /// i.e. all vertices `u` such that the storage contains the edge `vertex -> u`
-    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a;
-
-    fn size(&self) -> usize;
-    fn order(&self) -> usize;
-
-    // Blanket implementations
-    /// Returns `true` if the storage contains the edge `u -> v` or `v -> u`.
-    fn has_undirected_edge(&mut self, u: usize, v: usize) -> bool {
-        self.has_edge(u, v) || self.has_edge(v, u)
-    }
-
-    /// Adds the edges `u -> v` and `v -> u`
-    fn add_undirected_edge(&mut self, u: usize, v: usize) {
-        self.add_edge(u, v);
-        self.add_edge(v, u);
-    }
-
-    /// Returns an instance with `nv` vertices and all possible edges.
-    fn complete_graph(nv: usize) -> Self {
-        let mut ret = Self::with_capacity(nv);
-        for u in 1..nv {
-            for v in 0..u {
-                ret.add_edge(u, v);
-            }
+    // Vertex modifiers
+    /// Add a vertex to storage and return its label.
+    fn add_vertex(&mut self) -> Self::VertexLabel;
+    /// Add `count` vertices to storage.
+    fn add_vertices(&mut self, count: usize) {
+        for _ in 0..count {
+            self.add_vertex();
         }
-        ret
     }
+    /// Remove a vertex by its label.
+    fn rem_vertex(&mut self, label: Self::VertexLabel);
+
+    // Edge Modifiers
+    /// Add an edge. This is unsafe since it can produce multi-edges.
+    unsafe fn add_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel);
+    /// Remove an edge based on its label.
+    fn rem_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel);
+
+    /// Remove an undirected edge.
+    fn rem_undirected_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel);
+
+    // Accessors
+    /// Return true if and only if the graph contains the specified vertex label.
+    fn has_vertex(&self, label: Self::VertexLabel) -> bool;
+    /// Return true if and only if the graph contains the specified edge label.
+    fn has_edge(&self, from: Self::VertexLabel, to: Self::VertexLabel) -> bool;
+
+    // Basic Iterators
+    /// Iterate over vertices by label.
+    fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a;
+    /// Iterate over edges by label.
+    fn edge_iterator<'a>(
+        &'a self,
+    ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a;
+    /// Iterate over neighbors of `vertex` by label.
+    fn neighbor_iterator<'a>(
+        &'a self,
+        vertex: usize,
+    ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a>;
 }

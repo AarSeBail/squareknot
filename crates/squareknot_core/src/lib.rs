@@ -1,10 +1,11 @@
-pub mod storage;
+pub mod fast;
 pub mod graph;
+pub mod storage;
 pub mod undirected;
 
-pub use storage::*;
+pub use fast::*;
 pub use graph::*;
+pub use storage::*;
 pub use undirected::*;
 
-// Fundamental types
 pub type SimpleGraph = UnGraph<AdjacencyList>;

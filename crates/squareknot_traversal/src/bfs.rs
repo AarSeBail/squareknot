@@ -2,7 +2,7 @@ use std::collections::VecDeque;
 
 use squareknot_core::AbstractGraph;
 
-pub trait BFSGraph: AbstractGraph {
+pub trait BFSGraph: AbstractGraph<VertexLabel = usize> {
     fn bfs<'a>(&'a self, root: usize) -> BFSTraversal<'a, Self> {
         BFSTraversal::from_root(self, root)
     }
@@ -11,7 +11,7 @@ pub trait BFSGraph: AbstractGraph {
     }
 }
 
-impl<G: AbstractGraph> BFSGraph for G {}
+impl<G: AbstractGraph<VertexLabel = usize>> BFSGraph for G {}
 
 pub struct BFSNode {
     pub vertex: usize,
@@ -19,7 +19,7 @@ pub struct BFSNode {
 }
 
 /// Iterate over vertices using breadth first search.
-pub struct BFSTraversal<'a, G: AbstractGraph> {
+pub struct BFSTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
     graph: &'a G,
     /// Storing parents allows us to trace paths
     parents: Vec<usize>,
@@ -29,7 +29,7 @@ pub struct BFSTraversal<'a, G: AbstractGraph> {
     started: bool,
 }
 
-impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSTraversal<'a, G> {
     /// Traverse starting from root.
     pub fn from_root(graph: &'a G, root: usize) -> Self {
         let mut parents = vec![usize::MAX; graph.order()];
@@ -101,7 +101,7 @@ impl<'a, G: AbstractGraph> BFSTraversal<'a, G> {
     }
 }
 
-impl<'a, G: AbstractGraph> Iterator for BFSTraversal<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for BFSTraversal<'a, G> {
     type Item = BFSNode;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -109,7 +109,7 @@ impl<'a, G: AbstractGraph> Iterator for BFSTraversal<'a, G> {
 
         loop {
             if let Some(current_node) = self.queue.pop_front() {
-                let neighbors = self.graph.neighbors(current_node.vertex);
+                let neighbors = self.graph.neighbor_iterator(current_node.vertex).unwrap();
 
                 for neighbor in neighbors {
                     if self.parents[neighbor] == usize::MAX {

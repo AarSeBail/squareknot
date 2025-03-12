@@ -1,6 +1,6 @@
 use std::marker::PhantomData;
 
-use squareknot_core::AbstractGraph;
+use squareknot_core::{AbstractGraph, FastGraph};
 
 use super::{pair_iter::PairIterator, GraphFormat};
 
@@ -10,7 +10,7 @@ pub struct FakeDimacs<G: AbstractGraph> {
     _p: PhantomData<G>,
 }
 
-impl<G: AbstractGraph> GraphFormat<G> for FakeDimacs<G> {
+impl<G: FastGraph> GraphFormat<G> for FakeDimacs<G> {
     fn parse_graph<R: std::io::BufRead>(reader: R) -> Result<G, ()> {
         let mut pairs = PairIterator::new(reader);
         let (nv, ne) = pairs.next().ok_or(())?;
@@ -18,7 +18,9 @@ impl<G: AbstractGraph> GraphFormat<G> for FakeDimacs<G> {
         let mut graph = G::empty(nv);
 
         for (u, v) in pairs.take(ne) {
-            graph.add_edge_unchecked(u, v);
+            unsafe {
+                graph.add_edge_unchecked(u, v);
+            }
         }
         Ok(graph)
     }
