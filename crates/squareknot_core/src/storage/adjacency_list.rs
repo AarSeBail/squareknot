@@ -1,12 +1,18 @@
 use super::Storage;
 
 #[derive(Clone)]
-struct AdjacencyNode {
-    neighbors: Option<Vec<usize>>,
+pub struct AdjacencyNode {
+    pub neighbors: Option<Vec<usize>>,
 }
 
 pub struct AdjacencyList {
-    list: Vec<AdjacencyNode>,
+    pub list: Vec<AdjacencyNode>,
+}
+
+impl AdjacencyList {
+    pub fn out_degree(&self, vertex: usize) -> usize {
+        self.list[vertex].neighbors.as_ref().unwrap().len()
+    }
 }
 
 impl Storage for AdjacencyList {
