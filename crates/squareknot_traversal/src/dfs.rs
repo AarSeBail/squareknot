@@ -1,6 +1,6 @@
 use squareknot_core::AbstractGraph;
 
-pub trait DFSGraph: AbstractGraph {
+pub trait DFSGraph: AbstractGraph<VertexLabel = usize> {
     fn dfs<'a>(&'a self, root: usize) -> DFSTraversal<'a, Self> {
         DFSTraversal::from_root(self, root)
     }
@@ -9,7 +9,7 @@ pub trait DFSGraph: AbstractGraph {
     }
 }
 
-impl<G: AbstractGraph> DFSGraph for G {}
+impl<G: AbstractGraph<VertexLabel = usize>> DFSGraph for G {}
 
 #[derive(Debug)]
 pub struct DFSNode {
@@ -18,7 +18,7 @@ pub struct DFSNode {
 }
 
 /// Iterate over vertices using depth first search.
-pub struct DFSTraversal<'a, G: AbstractGraph> {
+pub struct DFSTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
     graph: &'a G,
     parents: Vec<usize>,
     stack: Vec<DFSNode>,
@@ -27,7 +27,7 @@ pub struct DFSTraversal<'a, G: AbstractGraph> {
     started: bool,
 }
 
-impl<'a, G: AbstractGraph> DFSTraversal<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
     /// Traverse starting from root.
     pub fn from_root(graph: &'a G, root: usize) -> Self {
         let mut parents = vec![usize::MAX; graph.size()];
@@ -96,7 +96,7 @@ impl<'a, G: AbstractGraph> DFSTraversal<'a, G> {
     }
 }
 
-impl<'a, G: AbstractGraph> Iterator for DFSTraversal<'a, G> {
+impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for DFSTraversal<'a, G> {
     type Item = DFSNode;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -105,7 +105,7 @@ impl<'a, G: AbstractGraph> Iterator for DFSTraversal<'a, G> {
         loop {
             if let Some(current_node) = self.stack.pop() {
                 // Accept both types of Neighbors and create a slice from them.
-                let neighbors = self.graph.neighbors(current_node.vertex);
+                let neighbors = self.graph.neighbor_iterator(current_node.vertex).unwrap();
                 /*let refd = match &neighbors {
                     Neighbors::Owned(v) => v,
                     Neighbors::Referenced(v) => *v,

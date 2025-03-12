@@ -6,8 +6,7 @@ use squareknot_traversal::BFSGraph;
 fn comp_count() {
     let g = "10 5\n0 1\n1 2\n2 3\n3 4\n5 6";
     // &[u8] implements BufRead, which is required by parse_graph()
-    let graph: SimpleGraph =
-        FakeDimacs::parse_graph(g.as_bytes()).expect("Could not parse graph.");
+    let graph: SimpleGraph = FakeDimacs::parse_graph(g.as_bytes()).expect("Could not parse graph.");
 
     let dfs = graph.full_bfs();
     let ncomp = dfs

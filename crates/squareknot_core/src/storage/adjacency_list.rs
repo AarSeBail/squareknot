@@ -1,88 +1,118 @@
 use super::Storage;
 
-pub struct AdjacencyNode {
-    pub edges: Vec<usize>,
-    pub out_degree: usize,
-    pub in_degree: usize,
-}
-
-impl AdjacencyNode {
-    fn empty() -> Self {
-        Self {
-            edges: vec![],
-            out_degree: 0,
-            in_degree: 0,
-        }
-    }
+#[derive(Clone)]
+struct AdjacencyNode {
+    neighbors: Option<Vec<usize>>,
 }
 
 pub struct AdjacencyList {
-    pub size: usize,
-    pub order: usize,
-    pub lists: Vec<AdjacencyNode>,
+    list: Vec<AdjacencyNode>,
 }
 
 impl Storage for AdjacencyList {
-    fn empty() -> Self {
-        AdjacencyList {
-            size: 0,
-            order: 0,
-            lists: vec![],
-        }
-    }
+    type VertexLabel = usize;
 
-    fn with_capacity(nv: usize) -> Self {
-        AdjacencyList {
-            size: 0,
-            order: nv,
-            lists: (0..nv).map(|_| AdjacencyNode::empty()).collect(),
-        }
-    }
-
-    fn has_edge(&self, from: usize, to: usize) -> bool {
-        self.lists[from].edges.contains(&to)
-    }
-
-    #[inline]
-    fn add_edge(&mut self, from: usize, to: usize) {
-        self.lists[from].edges.push(to);
-        self.lists[from].out_degree += 1;
-        self.lists[to].in_degree += 1;
-        self.size += 1;
-    }
-
-    fn in_degree(&self, vertex: usize) -> usize {
-        self.lists[vertex].in_degree
-    }
-
-    fn out_degree(&self, vertex: usize) -> usize {
-        self.lists[vertex].out_degree
-    }
-
-    fn neighbors<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a {
-        self.lists[vertex].edges.iter().cloned()
-    }
-
-    fn size(&self) -> usize {
-        self.size
-    }
-
-    fn order(&self) -> usize {
-        self.order
-    }
-
-    fn complete_graph(nv: usize) -> Self {
-        AdjacencyList {
-            size: nv * (nv - 1) / 2,
-            order: nv,
-            lists: (0..nv)
-                .map(|i| (0..i).chain(i + 1..nv).collect())
-                .map(|e| AdjacencyNode {
-                    edges: e,
-                    in_degree: nv - 1,
-                    out_degree: nv - 1,
+    // Constructors
+    /// Construct storage for a graph on `nv` vertices with no edges.
+    fn empty(nv: usize) -> Self {
+        Self {
+            list: (0..nv)
+                .map(|_x| AdjacencyNode {
+                    neighbors: Some(vec![]),
                 })
                 .collect(),
         }
+    }
+
+    // Attributes
+    /// Return the number of vertex labels in storage.
+    fn num_v_labels(&self) -> usize {
+        self.list.len()
+    }
+
+    // Vertex modifiers
+    /// Add a vertex to storage and return its label.
+    fn add_vertex(&mut self) -> Self::VertexLabel {
+        self.list.push(AdjacencyNode {
+            neighbors: Some(vec![]),
+        });
+        self.list.len() - 1
+    }
+    /// Add `count` vertices to storage.
+    fn add_vertices(&mut self, count: usize) {
+        for _ in 0..count {
+            self.add_vertex();
+        }
+    }
+    /// Remove a vertex by its label.
+    fn rem_vertex(&mut self, label: usize) {
+        self.list[label].neighbors = None;
+    }
+
+    // Edge Modifiers
+    /// Add an edge. This is unchecked.
+    unsafe fn add_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel) {
+        if let Some(neighbors) = &mut self.list[from].neighbors {
+            neighbors.push(to);
+        }
+    }
+    /// Remove an edge based on its label.
+    fn rem_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel) {
+        if let Some(neighbors) = &mut self.list[from].neighbors {
+            if let Some(&i) = neighbors.iter().find(|&&x| x == to) {
+                neighbors.remove(i);
+            }
+        }
+    }
+
+    /// Remove an undirected edge.
+    fn rem_undirected_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) {
+        self.rem_edge(u, v);
+        self.rem_edge(v, u);
+    }
+
+    // Accessors
+    /// Return true if and only if the graph contains the specified vertex label.
+    fn has_vertex(&self, label: Self::VertexLabel) -> bool {
+        self.list[label].neighbors.is_some()
+    }
+    /// Return true if and only if the graph contains the specified edge label.
+    fn has_edge(&self, from: Self::VertexLabel, to: Self::VertexLabel) -> bool {
+        if let Some(neighbors) = &self.list[from].neighbors {
+            neighbors.contains(&to)
+        } else {
+            false
+        }
+    }
+
+    // Basic Iterators
+    /// Iterate over vertices by label.
+    fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a {
+        self.list
+            .iter()
+            .enumerate()
+            .filter(|(_, x)| x.neighbors.is_some())
+            .map(|(i, _)| i)
+    }
+    /// Iterate over edges by label.
+    fn edge_iterator<'a>(
+        &'a self,
+    ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a {
+        self.list
+            .iter()
+            .enumerate()
+            .filter(|(_, x)| x.neighbors.is_some())
+            .map(|(u, x)| x.neighbors.as_ref().unwrap().iter().map(move |&v| (u, v)))
+            .flatten()
+    }
+    /// Iterate over neighbors of `vertex` by label.
+    fn neighbor_iterator<'a>(
+        &'a self,
+        vertex: usize,
+    ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a> {
+        self.list[vertex]
+            .neighbors
+            .as_ref()
+            .map(|neighbors| neighbors.iter().map(|&x| x))
     }
 }

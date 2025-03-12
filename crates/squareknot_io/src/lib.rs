@@ -1,5 +1,5 @@
-mod pair_iter;
 pub mod dimacs;
+mod pair_iter;
 
 use std::io::{BufRead, Write};
 
