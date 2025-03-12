@@ -3,7 +3,7 @@ use crate::{AbstractGraph, FastGraph, Storage};
 pub struct UnGraph<S: Storage> {
     order: usize,
     size: usize,
-    storage: S,
+    pub storage: S,
 }
 
 impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
