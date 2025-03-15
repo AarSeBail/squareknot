@@ -25,22 +25,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "squareknot_core"
-version = "0.1.0"
-
-[[package]]
-name = "squareknot_embedding"
+name = "squareknot_graph"
 version = "0.1.0"
 
 [[package]]
 name = "squareknot_internal"
 version = "0.1.0"
 dependencies = [
- "squareknot_core",
- "squareknot_embedding",
+ "squareknot_graph",
  "squareknot_io",
  "squareknot_metadata",
  "squareknot_pathing",
+ "squareknot_planarity",
  "squareknot_traversal",
 ]
 
@@ -49,27 +45,34 @@ name = "squareknot_io"
 version = "0.1.0"
 dependencies = [
  "itertools",
- "squareknot_core",
+ "squareknot_graph",
 ]
 
 [[package]]
 name = "squareknot_metadata"
 version = "0.1.0"
 dependencies = [
- "squareknot_core",
+ "squareknot_graph",
 ]
 
 [[package]]
 name = "squareknot_pathing"
 version = "0.1.0"
 dependencies = [
- "squareknot_core",
+ "squareknot_graph",
  "squareknot_traversal",
+]
+
+[[package]]
+name = "squareknot_planarity"
+version = "0.1.0"
+dependencies = [
+ "squareknot_graph",
 ]
 
 [[package]]
 name = "squareknot_traversal"
 version = "0.1.0"
 dependencies = [
- "squareknot_core",
+ "squareknot_graph",
 ]

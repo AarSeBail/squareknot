@@ -1,6 +1,6 @@
 //! Abstractions over graph metadata
 
-use squareknot_core::AbstractGraph;
+use squareknot_graph::AbstractGraph;
 
 /// An trait for structures which represent metadata about a graph
 /// While these most often implement `VertexAttribute` or `EdgeAttribute`,

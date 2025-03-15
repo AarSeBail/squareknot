@@ -3,7 +3,7 @@ mod pair_iter;
 
 use std::io::{BufRead, Write};
 
-use squareknot_core::AbstractGraph;
+use squareknot_graph::AbstractGraph;
 
 pub trait GraphFormat<G: AbstractGraph> {
     fn parse_graph<R: BufRead>(reader: R) -> Result<G, ()>;

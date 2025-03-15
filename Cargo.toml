@@ -8,8 +8,8 @@ edition = "2021"
 
 [workspace]
 members = [
-    "crates/squareknot_core",
-    "crates/squareknot_embedding",
+    "crates/squareknot_graph",
+    "crates/squareknot_planarity",
     "crates/squareknot_io",
     "crates/squareknot_metadata",
     "crates/squareknot_pathing",
@@ -25,7 +25,7 @@ squareknot_internal = { path = "crates/squareknot_internal" }
 default = ["io", "embedding", "traversal", "pathing", "metadata"]
 
 io = ["squareknot_internal/io"]
-embedding = ["squareknot_internal/embedding"]
+embedding = ["squareknot_internal/planarity"]
 traversal = ["squareknot_internal/traversal"]
 pathing = ["squareknot_internal/pathing", "traversal"]
 metadata = ["squareknot_internal/metadata"]

@@ -5,14 +5,14 @@ edition = "2024"
 
 [features]
 io = ["dep:squareknot_io"]
-embedding = ["dep:squareknot_embedding"]
+planarity = ["dep:squareknot_planarity"]
 traversal = ["dep:squareknot_traversal"]
 pathing = ["dep:squareknot_pathing", "traversal"]
 metadata = ["dep:squareknot_metadata"]
 
 [dependencies]
-squareknot_core = { path = "../squareknot_core" }
-squareknot_embedding = { path = "../squareknot_embedding", optional = true }
+squareknot_graph = { path = "../squareknot_graph" }
+squareknot_planarity = { path = "../squareknot_planarity", optional = true }
 squareknot_io = { path = "../squareknot_io", optional = true }
 squareknot_metadata = { path = "../squareknot_metadata", optional = true }
 squareknot_pathing = { path = "../squareknot_pathing", optional = true }

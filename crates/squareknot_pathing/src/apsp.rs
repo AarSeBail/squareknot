@@ -1,4 +1,4 @@
-use squareknot_core::AbstractGraph;
+use squareknot_graph::AbstractGraph;
 use squareknot_traversal::{BFSGraph, BFSTraversal};
 
 /// All Pairs Shortest Paths iterator

@@ -1,6 +1,6 @@
-use squareknot::core::*;
-use squareknot::io::{dimacs::FakeDimacs, *};
-use squareknot::traversal::*;
+use squareknot::*;
+use io::{dimacs::FakeDimacs, *};
+use traversal::*;
 
 #[test]
 fn comp_count() {
