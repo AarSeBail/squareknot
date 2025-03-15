@@ -3,15 +3,29 @@ name = "squareknot"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
-bit-vec = "0.8.0"
-itertools = "0.14.0"
-rand = "0.9.0"
-
 # [profile.release]
 # opt-level = 3
 
 [workspace]
 members = [
-    "crates/squareknot_core", "crates/squareknot_embedding", "crates/squareknot_io", "crates/squareknot_metadata", "crates/squareknot_pathing",
-    "crates/squareknot_traversal", "integration_tests"]
+    "crates/squareknot_core",
+    "crates/squareknot_embedding",
+    "crates/squareknot_io",
+    "crates/squareknot_metadata",
+    "crates/squareknot_pathing",
+    "crates/squareknot_traversal",
+    "crates/squareknot_internal",
+]
+exclude = ["integration_tests"]
+
+[dependencies]
+squareknot_internal = { path = "crates/squareknot_internal" }
+
+[features]
+default = ["io", "embedding", "traversal", "pathing", "metadata"]
+
+io = ["squareknot_internal/io"]
+embedding = ["squareknot_internal/embedding"]
+traversal = ["squareknot_internal/traversal"]
+pathing = ["squareknot_internal/pathing", "traversal"]
+metadata = ["squareknot_internal/metadata"]
