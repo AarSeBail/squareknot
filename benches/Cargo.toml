@@ -1,0 +1,16 @@
+[package]
+name = "benches"
+version = "0.1.0"
+edition = "2024"
+autobenches = false
+
+[dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+rand = "0.9.0"
+squareknot_graph = { path = "../crates/squareknot_graph" }
+squareknot_traversal = { path = "../crates/squareknot_traversal" }
+
+[[bench]]
+name = "traversal"
+path = "benches/squareknot_traversal/main.rs"
+harness = false
