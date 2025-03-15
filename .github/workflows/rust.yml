@@ -2,21 +2,25 @@ name: Rust
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose --workspace
+      - uses: actions/checkout@v4
+      - name: Build
+        run: cargo build --verbose
+      - name: Run Unit Tests
+        run: cargo test --verbose --workspace
+      - name: Build Integration Tests
+        run: cargo build --verbose
+      - name: Run Integration Tests
+        working-directory: ./integration_tests
+        run: cargo test --verbose

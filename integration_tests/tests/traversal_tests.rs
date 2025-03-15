@@ -1,6 +1,6 @@
-use squareknot_core::{AbstractGraph, SimpleGraph};
-use squareknot_io::{dimacs::FakeDimacs, GraphFormat};
-use squareknot_traversal::BFSGraph;
+use squareknot::core::*;
+use squareknot::io::{dimacs::FakeDimacs, *};
+use squareknot::traversal::*;
 
 #[test]
 fn comp_count() {
