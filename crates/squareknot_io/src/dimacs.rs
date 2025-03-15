@@ -1,6 +1,6 @@
 use std::marker::PhantomData;
 
-use squareknot_core::{AbstractGraph, FastGraph};
+use squareknot_graph::{AbstractGraph, FastGraph};
 
 use super::{pair_iter::PairIterator, GraphFormat};
 

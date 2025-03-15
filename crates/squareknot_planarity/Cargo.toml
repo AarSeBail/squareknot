@@ -1,5 +1,5 @@
 [package]
-name = "squareknot_metadata"
+name = "squareknot_planarity"
 version = "0.1.0"
 edition = "2021"
 

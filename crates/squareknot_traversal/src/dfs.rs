@@ -1,4 +1,4 @@
-use squareknot_core::AbstractGraph;
+use squareknot_graph::AbstractGraph;
 
 pub trait DFSGraph: AbstractGraph<VertexLabel = usize> {
     fn dfs<'a>(&'a self, root: usize) -> DFSTraversal<'a, Self> {

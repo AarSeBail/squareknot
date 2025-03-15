@@ -1,8 +1,10 @@
-pub use core::*;
-pub use squareknot_core as core;
+// Thius
 
-#[cfg(feature = "embedding")]
-pub use squareknot_embedding as embedding;
+pub use squareknot_graph as graph;
+pub use graph::*;
+
+#[cfg(feature = "planarity")]
+pub use squareknot_planarity as planarity;
 #[cfg(feature = "io")]
 pub use squareknot_io as io;
 #[cfg(feature = "metadata")]

@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use squareknot_core::AbstractGraph;
+use squareknot_graph::AbstractGraph;
 
 pub trait BFSGraph: AbstractGraph<VertexLabel = usize> {
     fn bfs<'a>(&'a self, root: usize) -> BFSTraversal<'a, Self> {

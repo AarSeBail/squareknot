@@ -2,6 +2,8 @@
 - [X] Depth First Iterator
 - [X] Breadth First Iterator
 - [ ] Greedy Coloring Algorithms
+  - Requires metadata first
+- [ ] Other Coloring Algorithms
 - [X] Union Find
 - [ ] Components and Component Counts
 - [ ] Eulerian Cycle/Circuit
@@ -10,7 +12,6 @@
 - [ ] Laplacian Matrix
 - [ ] Bron-Kerbosch Algorithm
 - [ ] Isomorphism Testing and Construction
-- [ ] Coloring Algorithms
 - [ ] K-Shortest Disjoint Paths
 - [ ] Boyer-Myrvold Algorithm
 - [ ] Automorphism Algorithms
@@ -40,6 +41,7 @@
   - [X] Q: How to do the types for this? Probably use associated types... A: Just use ``impl Iterator<Item = usize>``.
 - [ ] Conversion b/w Storage Types
 - [ ] AI Generated Logo
+- [ ] Add `README.md` to each crate.
 
 # Quandaries
 - [ ] The new neighbor functions do not support .rev and other `DoubleEndedIterator` operations. This messes with the expected order of BFS. In all fairness, neighborhoods might best be described as unordered unless an order is induced.
