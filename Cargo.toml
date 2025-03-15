@@ -14,7 +14,7 @@ members = [
     "crates/squareknot_metadata",
     "crates/squareknot_pathing",
     "crates/squareknot_traversal",
-    "crates/squareknot_internal",
+    "crates/squareknot_internal", "benches",
 ]
 exclude = ["integration_tests"]
 

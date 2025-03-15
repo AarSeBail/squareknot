@@ -1,5 +1,5 @@
-pub mod bfs;
-pub mod dfs;
+pub mod breadth_first;
+pub use breadth_first::*;
 
-pub use bfs::*;
-pub use dfs::*;
+pub mod depth_first;
+pub use depth_first::*;

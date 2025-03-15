@@ -1,5 +1,5 @@
-use squareknot_graph::AbstractGraph;
-use squareknot_traversal::{BFSGraph, BFSTraversal};
+/*use squareknot_graph::AbstractGraph;
+use squareknot_traversal::BFSTraversal;
 
 /// All Pairs Shortest Paths iterator
 /// Iterates over all pairs of connected vertices and their shortest paths
@@ -48,4 +48,4 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for APSPIterator<'a, G>
         }
         None
     }
-}
+}*/
