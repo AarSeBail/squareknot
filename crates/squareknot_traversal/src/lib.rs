@@ -23,22 +23,22 @@ pub struct TraversalNode {
 /// Trait implementing traversal methods on graphs with `usize` vertices
 pub trait TraversalGraph: AbstractGraph<VertexLabel = usize> {
     /// Traverses the graph starting from `root`.
-    fn bfs<'a>(&'a self, root: usize) -> BFSTraversal<'a, Self> {
+    fn bfs(&self, root: usize) -> BFSTraversal<Self> {
         BFSTraversal::new(self, root)
     }
 
     /// Creates a full traversal of the graph starting from first vertex from the graph (See [`AbstractGraph::vertex_iterator`]).
-    fn full_bfs<'a>(&'a self) -> BFSFullTraversal<'a, Self> {
+    fn full_bfs(&self) -> BFSFullTraversal<Self> {
         BFSFullTraversal::new(self)
     }
 
     /// Traverses the graph starting from `root`.
-    fn dfs<'a>(&'a self, root: usize) -> DFSTraversal<'a, Self> {
+    fn dfs(&self, root: usize) -> DFSTraversal<Self> {
         DFSTraversal::new(self, root)
     }
 
     /// Creates a full traversal of the graph starting from first vertex from the graph (See [`AbstractGraph::vertex_iterator`]).
-    fn full_dfs<'a>(&'a self) -> DFSFullTraversal<'a, Self> {
+    fn full_dfs(&self) -> DFSFullTraversal<Self> {
         DFSFullTraversal::new(self)
     }
 

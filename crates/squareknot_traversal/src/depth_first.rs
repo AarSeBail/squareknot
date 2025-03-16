@@ -24,7 +24,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
         }
     }
 
-    /// Extracts [`DFSResources`] which may be recycled into a new [`super::DFSTraversal`] or [`super::DFSFullTraversal`]
+    /// Extracts [`DFSResources`] which may be recycled into a new [`DFSTraversal`] or [`super::DFSFullTraversal`]
     pub fn extract_resources(self) -> DFSResources {
         DFSResources {
             visited: Some(self.visited),

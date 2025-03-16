@@ -1,0 +1,7 @@
+[package]
+name = "squareknot_combinators"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+squareknot_graph = { path = "../squareknot_graph" }

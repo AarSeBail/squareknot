@@ -8,20 +8,20 @@ pub mod adjacency_matrix;
 #[cfg(feature = "nalgebra")]
 pub use adjacency_matrix::*;
 
-/// A trait which, for the most part, mirrors [`AbstractGraph`]
+/// A trait which, for the most part, mirrors [`crate::AbstractGraph`]
 ///
-/// This provides an extra layer of abstraction, allowing the reuse ofstorage code for both directed and undirected graphs.
+/// This provides an extra layer of abstraction, allowing the reuse of storage code for both directed and undirected graphs.
 ///
 /// This also allows graphs using this trait to be backend independent, allowing them to be reusable components as well.
 ///
-/// Accordingly this trait is intended to support all such cases.
+/// Accordingly, this trait is intended to support all such cases.
 ///
-/// It is possible to support only one case (e.g. a `Storage` implementation for only undirected graphs), however this is undefined behavior and will not be explicitly supported.
+/// It is possible to support only one case (e.g. a [`Storage`] implementation for only undirected graphs), however this is undefined behavior and will not be explicitly supported.
 pub trait Storage: Sized {
     /// A label for vertices.
     ///
-    /// See [`AbstractGraph::VertexLabel`]
-    type VertexLabel: Copy + Hash;
+    /// See [`crate::AbstractGraph::VertexLabel`]
+    type VertexLabel: Copy + Hash + Sized;
 
     // Constructors
     /// Construct storage for a graph on `nv` vertices with no edges.

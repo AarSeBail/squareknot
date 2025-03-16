@@ -2,8 +2,8 @@
 
 use squareknot_graph::AbstractGraph;
 
-/// An trait for structures which represent metadata about a graph
-/// While these most often implement `VertexAttribute` or `EdgeAttribute`,
+/// A trait for structures which represent metadata about a graph
+/// While these most often implement [`VertexAttribute`] or [`EdgeAttribute`],
 /// they are not required to
 pub trait Attribute {
     fn add_edge(&mut self, u: usize, v: usize, id: usize);

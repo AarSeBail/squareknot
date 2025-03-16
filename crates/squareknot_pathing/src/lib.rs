@@ -1,8 +1,6 @@
 use squareknot_graph::AbstractGraph;
 use squareknot_traversal::TraversalGraph;
 
-pub mod shortest_path;
-
 pub trait PathingGraph: AbstractGraph<VertexLabel = usize> {
     fn shortest_path(graph: &Self, u: usize, v: usize) -> Result<Vec<usize>, ()>;
 }
