@@ -22,7 +22,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSFullTraversal<'a, G> {
         }
     }
 
-    /// Extracts [`BFSResources`] which may be recycled into a new [`super::BFSTraversal`] or [`super::BFSFullTraversal`]
+    /// Extracts [`BFSResources`] which may be recycled into a new [`super::BFSTraversal`] or [`BFSFullTraversal`]
     pub fn extract_resources(self) -> BFSResources {
         BFSResources {
             visited: Some(self.visited),

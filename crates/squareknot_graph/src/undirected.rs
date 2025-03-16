@@ -6,12 +6,9 @@ pub struct UnGraph<S: Storage> {
     storage: S,
 }
 
-impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
+impl<S: Storage<VertexLabel: Ord + Copy>> AbstractGraph for UnGraph<S> {
     /// A label for vertices.
-    /// It is probably a good idea for distinct vertices (in the context of the represented graph) to have distinct labels.
     type VertexLabel = S::VertexLabel;
-    /// A label for edges.
-    type EdgeLabel = (S::VertexLabel, S::VertexLabel);
 
     // Constructors
     /// Constructs a graph on `nv` vertices with no edges.
@@ -49,7 +46,7 @@ impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
     }
     /// Add `count` vertices to the graph.
     ///
-    /// Currently this does not return the labels, however this may be subject to change.
+    /// Currently, this does not return the labels, however this may be subject to change.
     fn add_vertices(&mut self, count: usize) {
         for _ in 0..count {
             self.add_vertex();
@@ -58,21 +55,21 @@ impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
 
     // Edge Modifiers
     /// Add an edge to the graph and return `Some(label)` if it is successful.
-    fn add_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> Option<Self::EdgeLabel> {
+    fn add_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool {
         if self.storage.has_edge(u, v) {
-            None
+            false
         } else {
             unsafe {
                 self.storage.add_edge(u, v);
                 self.storage.add_edge(v, u);
             }
-            Some((u.min(v), u.max(v)))
+            true
         }
     }
     /// Remove an edge based on its label and return `true` if it is successful.
-    fn rem_edge(&mut self, label: Self::EdgeLabel) -> bool {
-        if self.storage.has_edge(label.0, label.1) {
-            self.storage.rem_undirected_edge(label.0, label.1);
+    fn rem_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool {
+        if self.storage.has_edge(u, v) {
+            self.storage.rem_undirected_edge(u, v);
             self.size -= 1;
             true
         } else {
@@ -86,11 +83,8 @@ impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
         self.storage.has_vertex(label)
     }
     /// Return true if and only if the graph contains the specified edge label.
-    fn has_edge(&self, label: Self::EdgeLabel) -> bool {
-        self.storage.has_edge(label.0, label.1)
-    }
-    fn endpoints(&self, label: Self::EdgeLabel) -> (Self::VertexLabel, Self::VertexLabel) {
-        label
+    fn has_edge(&self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool {
+        self.storage.has_edge(u, v)
     }
 
     // Basic Iterators

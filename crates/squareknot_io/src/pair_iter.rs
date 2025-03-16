@@ -18,7 +18,7 @@ impl<B: BufRead> PairIterator<B> {
     }
 }
 
-impl<B: std::io::BufRead> Iterator for PairIterator<B> {
+impl<B: BufRead> Iterator for PairIterator<B> {
     type Item = (usize, usize);
 
     fn next(&mut self) -> Option<Self::Item> {

@@ -620,6 +620,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "squareknot_combinators"
+version = "0.1.0"
+dependencies = [
+ "squareknot_graph",
+]
+
+[[package]]
 name = "squareknot_graph"
 version = "0.1.0"
 dependencies = [
@@ -630,6 +637,7 @@ dependencies = [
 name = "squareknot_internal"
 version = "0.1.0"
 dependencies = [
+ "squareknot_combinators",
  "squareknot_graph",
  "squareknot_io",
  "squareknot_metadata",

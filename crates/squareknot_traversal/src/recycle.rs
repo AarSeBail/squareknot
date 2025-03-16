@@ -22,7 +22,7 @@ impl BFSResources {
         (v, q)
     }
 
-    pub fn bfs<'a, G: TraversalGraph>(self, graph: &'a G, root: usize) -> BFSTraversal<'a, G> {
+    pub fn bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> BFSTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         BFSTraversal {
@@ -32,7 +32,7 @@ impl BFSResources {
         }
     }
 
-    pub fn full_bfs<'a, G: TraversalGraph>(self, graph: &'a G, root: usize) -> BFSFullTraversal<'a, G> {
+    pub fn full_bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> BFSFullTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         BFSFullTraversal {
@@ -64,7 +64,7 @@ impl DFSResources {
         (v, q)
     }
 
-    pub fn bfs<'a, G: TraversalGraph>(self, graph: &'a G, root: usize) -> DFSTraversal<'a, G> {
+    pub fn bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> DFSTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         DFSTraversal {
@@ -74,7 +74,7 @@ impl DFSResources {
         }
     }
 
-    pub fn full_bfs<'a, G: TraversalGraph>(self, graph: &'a G, root: usize) -> DFSFullTraversal<'a, G> {
+    pub fn full_bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> DFSFullTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         DFSFullTraversal {

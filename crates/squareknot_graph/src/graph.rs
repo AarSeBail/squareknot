@@ -12,9 +12,6 @@ pub trait AbstractGraph: Sized {
     /// It is probably a good idea for distinct vertices (in the context of the represented graph) to have distinct labels.
     type VertexLabel: Copy + Hash;
 
-    /// A label for edges.
-    type EdgeLabel: Copy + Hash;
-
     // Constructors
     /// Constructs a graph on `nv` vertices with no edges.
     fn empty(nv: usize) -> Self;
@@ -34,7 +31,7 @@ pub trait AbstractGraph: Sized {
     fn add_vertex(&mut self) -> Self::VertexLabel;
     /// Add `count` vertices to the graph.
     ///
-    /// Currently this does not return the labels, however this may be subject to change.
+    /// Currently, this does not return the labels, however this may be subject to change.
     fn add_vertices(&mut self, count: usize) {
         for _ in 0..count {
             self.add_vertex();
@@ -43,21 +40,16 @@ pub trait AbstractGraph: Sized {
 
     // Edge Modifiers
     /// Add an edge to the graph and return `Some(label)` if it is successful.
-    fn add_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> Option<Self::EdgeLabel>;
+    fn add_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool;
     /// Remove an edge based on its label and return `true` if it is successful.
-    fn rem_edge(&mut self, label: Self::EdgeLabel) -> bool;
+    fn rem_edge(&mut self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool;
 
     // Accessors
     /// Return true if and only if the graph contains the specified vertex label.
     fn has_vertex(&self, label: Self::VertexLabel) -> bool;
     /// Return true if and only if the graph contains the specified edge label.
-    fn has_edge(&self, label: Self::EdgeLabel) -> bool;
-    /// Retrieve the endpoint labels from an edge label in the format `(from, to)`.
-    ///
-    /// Usually the endpoints are fairly obvious from the label, so this method should be avoided since cross-crate inlining is hit or miss at best.
-    ///
-    /// Still, it seems like a necessary evil for the sake of generality.
-    fn endpoints(&self, label: Self::EdgeLabel) -> (Self::VertexLabel, Self::VertexLabel);
+    fn has_edge(&self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool;
+
 
     // Basic Iterators
     /// Iterate over vertices by label.
