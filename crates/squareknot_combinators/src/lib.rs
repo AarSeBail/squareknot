@@ -3,28 +3,31 @@
 mod conversion;
 pub mod vertex_filter;
 pub mod vertex_map;
+pub mod living;
 
 use std::hash::Hash;
 
 use squareknot_graph::AbstractGraph;
 use vertex_filter::VertexFilter;
 use vertex_map::VertexMap;
+pub use living::*;
 
-//
+
 pub trait GraphLike {
     type VertexLabel: Copy + Hash;
 
-    /// Iterate over vertices by label.
-    /// This may produce duplicate vertices.
+    /// Iterates over vertices by label.
+    /// Consumers of this should expect to handle duplicate vertices.
     fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a;
 
-    /// Iterate over edges by label.
-    /// This may produce duplicates or self-loops.
+    /// Iterates over edges by label.
+    /// This should not produce self-loops.
+    /// Consumers of this should expect to handle duplicate edges.
     fn edge_iterator<'a>(
         &'a self,
     ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a;
 
-    /// A combinator that filters the vertices of a [`GraphLike`] object.
+    /// Filters the vertices of a [`GraphLike`] object.
     fn filter_vertices<F: Fn(Self::VertexLabel) -> bool>(&self, f: F) -> VertexFilter<'_, Self, F> where Self: Sized {
         VertexFilter {
             preimage: self,
@@ -32,8 +35,8 @@ pub trait GraphLike {
         }
     }
 
-    /// A combinator that maps (relabels) the vertices of a [`GraphLike`] object.
-    fn map_vertices<V: Copy + Hash, F: Fn(Self::VertexLabel) -> V>(&self, f: F) -> VertexMap<'_, Self, V, F> where Self: Sized {
+    /// Maps (relabels) the vertices of a [`GraphLike`] object.
+    fn map_vertices<V: Copy + Hash + Eq, F: Fn(Self::VertexLabel) -> V>(&self, f: F) -> VertexMap<'_, Self, V, F> where Self: Sized {
         VertexMap {
             preimage: self,
             f

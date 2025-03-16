@@ -2,12 +2,12 @@ use crate::GraphLike;
 
 use std::hash::Hash;
 
-pub struct VertexMap<'g, G: GraphLike, V: Copy + Hash, F: Fn(G::VertexLabel) -> V> {
+pub struct VertexMap<'g, G: GraphLike, V: Copy + Hash + Eq, F: Fn(G::VertexLabel) -> V> {
     pub(crate) preimage: &'g G,
     pub(crate) f: F,
 }
 
-impl<'g, G: GraphLike, V: Copy + Hash, F: Fn(G::VertexLabel) -> V> GraphLike
+impl<'g, G: GraphLike, V: Copy + Hash + Eq, F: Fn(G::VertexLabel) -> V> GraphLike
     for VertexMap<'g, G, V, F>
 {
     type VertexLabel = V;
@@ -22,5 +22,6 @@ impl<'g, G: GraphLike, V: Copy + Hash, F: Fn(G::VertexLabel) -> V> GraphLike
     ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a {
         self.preimage.edge_iterator()
             .map(|(u, v)| ((self.f)(u), (self.f)(v)))
+            .filter(|&(u, v)| u != v)
     }
 }
