@@ -1,3 +1,5 @@
+//! This crate contains functionality related to graph paths.
+
 use squareknot_graph::AbstractGraph;
 use squareknot_traversal::TraversalGraph;
 

@@ -8,6 +8,7 @@ pub struct AdjacencyMatrix {
 
 impl Storage for AdjacencyMatrix {
     // Constructors
+
     /// Construct storage for a graph on `nv` vertices with no edges.
     fn empty(nv: usize) -> Self {
         Self {
@@ -16,12 +17,14 @@ impl Storage for AdjacencyMatrix {
     }
 
     // Attributes
+
     /// Return the number of vertex labels in storage.
     fn num_v_labels(&self) -> usize {
         self.matrix.nrows()
     }
 
     // Vertex modifiers
+
     /// Add a vertex to storage and return its label.
     fn add_vertex(&mut self) -> usize {
         let nv = self.matrix.nrows();
@@ -36,10 +39,12 @@ impl Storage for AdjacencyMatrix {
     }
 
     // Edge Modifiers
+
     /// Add an edge. This is unchecked.
     unsafe fn add_edge(&mut self, from: usize, to: usize) {
         self.matrix[(from, to)] = 1;
     }
+
     /// Remove an edge based on its label.
     fn rem_edge(&mut self, from: usize, to: usize) {
         self.matrix[(from, to)] = 0;
@@ -52,20 +57,24 @@ impl Storage for AdjacencyMatrix {
     }
 
     // Accessors
+
     /// Return true if and only if the graph contains the specified vertex label.
     fn has_vertex(&self, label: usize) -> bool {
         label < self.matrix.nrows()
     }
+
     /// Return true if and only if the graph contains the specified edge label.
     fn has_edge(&self, from: usize, to: usize) -> bool {
         self.matrix[(from, to)] == 1
     }
 
     // Basic Iterators
+
     /// Iterate over vertices by label.
     fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = usize> + 'a {
         0..self.matrix.nrows()
     }
+
     /// Iterate over edges by label.
     fn edge_iterator<'a>(
         &'a self,
@@ -79,6 +88,7 @@ impl Storage for AdjacencyMatrix {
             })
             .flatten()
     }
+    
     /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,

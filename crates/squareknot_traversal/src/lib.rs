@@ -1,3 +1,4 @@
+//! This crate contains functionality related to graph traversal.
 pub mod breadth_first;
 
 pub use breadth_first::*;
