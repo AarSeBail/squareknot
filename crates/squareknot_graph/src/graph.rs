@@ -29,6 +29,9 @@ pub trait AbstractGraph: Sized {
     // Vertex Modifiers
     /// Add a vertex to the graph and return its label
     fn add_vertex(&mut self) -> Self::VertexLabel;
+
+    fn add_labeled_vertex(&mut self, label: Self::VertexLabel) -> bool;
+
     /// Add `count` vertices to the graph.
     ///
     /// Currently, this does not return the labels, however this may be subject to change.
@@ -49,7 +52,6 @@ pub trait AbstractGraph: Sized {
     fn has_vertex(&self, label: Self::VertexLabel) -> bool;
     /// Return true if and only if the graph contains the specified edge label.
     fn has_edge(&self, u: Self::VertexLabel, v: Self::VertexLabel) -> bool;
-
 
     // Basic Iterators
     /// Iterate over vertices by label.

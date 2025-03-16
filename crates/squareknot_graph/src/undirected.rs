@@ -6,9 +6,9 @@ pub struct UnGraph<S: Storage> {
     storage: S,
 }
 
-impl<S: Storage<VertexLabel: Ord + Copy>> AbstractGraph for UnGraph<S> {
+impl<S: Storage> AbstractGraph for UnGraph<S> {
     /// A label for vertices.
-    type VertexLabel = S::VertexLabel;
+    type VertexLabel = usize;
 
     // Constructors
     /// Constructs a graph on `nv` vertices with no edges.
@@ -44,6 +44,16 @@ impl<S: Storage<VertexLabel: Ord + Copy>> AbstractGraph for UnGraph<S> {
         self.order += 1;
         self.storage.add_vertex()
     }
+
+    fn add_labeled_vertex(&mut self, label: Self::VertexLabel) -> bool {
+        if label < self.storage.num_v_labels() {
+            false
+        }else {
+            self.add_vertices(label - self.storage.num_v_labels() + 1);
+            true
+        }
+    }
+
     /// Add `count` vertices to the graph.
     ///
     /// Currently, this does not return the labels, however this may be subject to change.
@@ -107,7 +117,7 @@ impl<S: Storage<VertexLabel: Ord + Copy>> AbstractGraph for UnGraph<S> {
     }
 }
 
-impl<S: Storage<VertexLabel = usize>> FastGraph for UnGraph<S> {
+impl<S: Storage> FastGraph for UnGraph<S> {
     unsafe fn add_edge_unchecked(&mut self, u: usize, v: usize) {
         self.storage.add_edge(u, v);
         self.storage.add_edge(v, u);

@@ -2,10 +2,7 @@ use squareknot_graph::AbstractGraph;
 
 use crate::{recycle::BFSResources, TraversalNode};
 
-pub struct BFSFullTraversal<
-    'a,
-    G: AbstractGraph<VertexLabel = usize>,
-> {
+pub struct BFSFullTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
     pub(crate) graph: &'a G,
     pub(crate) visited: Vec<bool>,
     pub(crate) queue: Vec<TraversalNode>,
@@ -18,7 +15,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSFullTraversal<'a, G> {
             graph,
             visited: vec![false; graph.num_v_labels()],
             queue: Vec::new(),
-            vertex_order: Box::new(graph.vertex_iterator())
+            vertex_order: Box::new(graph.vertex_iterator()),
         }
     }
 
@@ -26,7 +23,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSFullTraversal<'a, G> {
     pub fn extract_resources(self) -> BFSResources {
         BFSResources {
             visited: Some(self.visited),
-            queue: Some(self.queue)
+            queue: Some(self.queue),
         }
     }
     /// Iterate over the vertices in the graph which have been traversed
@@ -65,7 +62,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for BFSFullTraversal<'a
                     self.visited[v] = true;
                     self.queue.push(TraversalNode {
                         vertex: v,
-                        depth: 0
+                        depth: 0,
                     });
                     break;
                 }

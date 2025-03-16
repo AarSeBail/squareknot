@@ -17,7 +17,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSFullTraversal<'a, G> {
             graph,
             visited: vec![false; graph.num_v_labels()],
             queue: VecDeque::new(),
-            vertex_order: Box::new(graph.vertex_iterator())
+            vertex_order: Box::new(graph.vertex_iterator()),
         }
     }
 
@@ -25,7 +25,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSFullTraversal<'a, G> {
     pub fn extract_resources(self) -> DFSResources {
         DFSResources {
             visited: Some(self.visited),
-            queue: Some(self.queue)
+            queue: Some(self.queue),
         }
     }
 
@@ -66,7 +66,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for DFSFullTraversal<'a
                     self.visited[v] = true;
                     self.queue.push_back(TraversalNode {
                         vertex: v,
-                        depth: 0
+                        depth: 0,
                     });
                     break;
                 }

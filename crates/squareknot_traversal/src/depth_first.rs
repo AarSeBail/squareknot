@@ -28,7 +28,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
     pub fn extract_resources(self) -> DFSResources {
         DFSResources {
             visited: Some(self.visited),
-            queue: Some(self.queue)
+            queue: Some(self.queue),
         }
     }
 
@@ -38,7 +38,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
         self.queue.clear();
         self.queue.push_back(TraversalNode {
             vertex: root,
-            depth: 0
+            depth: 0,
         });
     }
 
