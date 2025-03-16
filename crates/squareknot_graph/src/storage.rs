@@ -3,6 +3,11 @@ use std::hash::Hash;
 pub mod adjacency_list;
 pub use adjacency_list::*;
 
+#[cfg(feature = "nalgebra")]
+pub mod adjacency_matrix;
+#[cfg(feature = "nalgebra")]
+pub use adjacency_matrix::*;
+
 /// A trait which, for the most part, mirrors [`AbstractGraph`]
 ///
 /// This provides an extra layer of abstraction, allowing the reuse ofstorage code for both directed and undirected graphs.

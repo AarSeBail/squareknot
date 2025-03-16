@@ -30,6 +30,16 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSTraversal<'a, G> {
         }
     }
 
+    pub fn restart_at(&mut self, root: usize) {
+        self.visited.fill(false);
+
+        self.queue.clear();
+        self.queue.push(TraversalNode {
+            vertex: root,
+            depth: 0
+        });
+    }
+
     /// Iterate over the vertices in the graph which have been traversed
     pub fn traversed_iter<'b>(&'b self) -> impl Iterator<Item = usize> + 'b {
         self.visited

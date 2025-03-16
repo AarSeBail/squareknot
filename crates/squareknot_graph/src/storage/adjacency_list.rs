@@ -80,10 +80,7 @@ impl Storage for AdjacencyList {
     // Basic Iterators
     /// Iterate over vertices by label.
     fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a {
-        self.list
-            .iter()
-            .enumerate()
-            .map(|(i, _)| i)
+        0..self.list.len()
     }
     /// Iterate over edges by label.
     fn edge_iterator<'a>(
