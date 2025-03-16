@@ -28,8 +28,9 @@
 - [ ] Actual `GraphFormat` Error Types
 - [ ] Implement Modified DIMACS Writer
 - [ ] Implement Real DIMACS Formatting
-- [ ] Vertex removal is slow, add an `InducedSubgraph` type
+- [X] Vertex removal is slow, add an `InducedSubgraph` type
   - Replace `rem_vertex` entirely? Probably, since testing for vertex membership causes slowdowns elsewhere.
+  - This was done as `VertexFilter`
 - [ ] Augment Graphs with Auxilliary Data Structures
   - [ ] Q: How to do this w/ zero cost?
   - [ ] Q: Use this to abstract away degrees?
@@ -43,7 +44,10 @@
   - [X] Q: How to do the types for this? Probably use associated types... A: Just use ``impl Iterator<Item = usize>``.
 - [ ] Conversion b/w Storage Types
 - [ ] AI Generated Logo
-- [ ] Add `README.md` to each crate.
+- [ ] Add `README.md` to each crate
 
 # Quandaries
 - [ ] The new neighbor functions do not support .rev and other `DoubleEndedIterator` operations. This messes with the expected order of BFS. In all fairness, neighborhoods might best be described as unordered unless an order is induced.
+
+# Documentation
+- [ ] Further clarify the differences between `Storage` and `AbstractGraph`
