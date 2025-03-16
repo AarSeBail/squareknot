@@ -20,4 +20,4 @@ Documentation may be viewed with ``cargo doc --workspace --open``.
 
 The codebase is modular, with features being split among the crates in `crates/`.
 
-The main graph types are contained in `squareknot_core`. For more details, see the documentation.
+The main graph types are contained in `squareknot_graph`. For more details, see the documentation.
