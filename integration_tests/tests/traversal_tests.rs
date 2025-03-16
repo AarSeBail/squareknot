@@ -1,5 +1,4 @@
-use io::{dimacs::FakeDimacs, *};
-use squareknot::*;
+use squareknot::{prelude::*, io::{dimacs::FakeDimacs, *}};
 
 #[test]
 fn bfs_comp_count() {
