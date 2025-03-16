@@ -7,4 +7,5 @@ edition = "2021"
 nalgebra = { version = "0.33.2", optional = true }
 
 [features]
+default = ["nalgebra"]
 nalgebra = ["dep:nalgebra"]
