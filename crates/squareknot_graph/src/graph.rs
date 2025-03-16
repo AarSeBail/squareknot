@@ -9,11 +9,12 @@ use std::hash::Hash;
 /// - This trait is designed with multigraphs in mind, however the implementations provided strictly support simple un/directed graphs.
 pub trait AbstractGraph: Sized {
     /// A label for vertices.
-    ///
     /// It is probably a good idea for distinct vertices (in the context of the represented graph) to have distinct labels.
     type VertexLabel: Copy + Hash;
+
     /// A label for edges.
     type EdgeLabel: Copy + Hash;
+
     // Constructors
     /// Constructs a graph on `nv` vertices with no edges.
     fn empty(nv: usize) -> Self;
@@ -39,8 +40,6 @@ pub trait AbstractGraph: Sized {
             self.add_vertex();
         }
     }
-    /// Remove a vertex by its label.
-    fn rem_vertex(&mut self, label: Self::VertexLabel);
 
     // Edge Modifiers
     /// Add an edge to the graph and return `Some(label)` if it is successful.
@@ -64,7 +63,9 @@ pub trait AbstractGraph: Sized {
     /// Iterate over vertices by label.
     fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a;
     /// Iterate over edges by label.
-    fn edge_iterator<'a>(&'a self) -> impl Iterator<Item = Self::EdgeLabel> + 'a;
+    fn edge_iterator<'a>(
+        &'a self,
+    ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a;
     /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,

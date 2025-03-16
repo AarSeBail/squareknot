@@ -4,3 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+nalgebra = { version = "0.33.2", optional = true }
+
+[features]
+nalgebra = ["dep:nalgebra"]

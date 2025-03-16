@@ -8,11 +8,11 @@ pub struct UnGraph<S: Storage> {
 
 impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
     /// A label for vertices.
-    ///
     /// It is probably a good idea for distinct vertices (in the context of the represented graph) to have distinct labels.
     type VertexLabel = S::VertexLabel;
     /// A label for edges.
     type EdgeLabel = (S::VertexLabel, S::VertexLabel);
+
     // Constructors
     /// Constructs a graph on `nv` vertices with no edges.
     fn empty(nv: usize) -> Self {
@@ -55,12 +55,6 @@ impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
             self.add_vertex();
         }
     }
-    /// Remove a vertex by its label.
-    fn rem_vertex(&mut self, label: Self::VertexLabel) {
-        if self.storage.has_vertex(label) {
-            self.storage.rem_vertex(label);
-        }
-    }
 
     // Edge Modifiers
     /// Add an edge to the graph and return `Some(label)` if it is successful.
@@ -99,17 +93,23 @@ impl<S: Storage<VertexLabel: Ord>> AbstractGraph for UnGraph<S> {
         label
     }
 
+    // Basic Iterators
+    /// Iterate over vertices by label.
     fn vertex_iterator<'a>(&'a self) -> impl Iterator<Item = Self::VertexLabel> + 'a {
         self.storage.vertex_iterator()
     }
-    fn edge_iterator<'a>(&'a self) -> impl Iterator<Item = Self::EdgeLabel> + 'a {
+    /// Iterate over edges by label.
+    fn edge_iterator<'a>(
+        &'a self,
+    ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a {
         self.storage.edge_iterator()
     }
+    /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,
         vertex: usize,
     ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a> {
-        self.storage.neighbor_iterator(vertex)
+        Some(self.storage.neighbor_iterator(vertex))
     }
 }
 

@@ -4,6 +4,6 @@ mod bfs;
 mod dfs;
 
 criterion_main!(
-    bfs::benches, 
+    bfs::benches,
     dfs::benches
 );

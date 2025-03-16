@@ -1,16 +1,10 @@
 use super::Storage;
 
-#[derive(Clone)]
-struct AdjacencyNode {
-    neighbors: Vec<usize>,
-}
-
-pub struct AdjacencyList {
+pub struct AdjacencyMatrix {
     list: Vec<AdjacencyNode>,
 }
 
 impl Storage for AdjacencyList {
-
     type VertexLabel = usize;
 
     // Constructors
@@ -19,7 +13,7 @@ impl Storage for AdjacencyList {
         Self {
             list: (0..nv)
                 .map(|_x| AdjacencyNode {
-                    neighbors: vec![],
+                    neighbors: Some(vec![]),
                 })
                 .collect(),
         }
@@ -35,7 +29,7 @@ impl Storage for AdjacencyList {
     /// Add a vertex to storage and return its label.
     fn add_vertex(&mut self) -> Self::VertexLabel {
         self.list.push(AdjacencyNode {
-            neighbors: vec![],
+            neighbors: Some(vec![]),
         });
         self.list.len() - 1
     }
@@ -45,18 +39,23 @@ impl Storage for AdjacencyList {
             self.add_vertex();
         }
     }
+    /// Remove a vertex by its label.
+    fn rem_vertex(&mut self, label: usize) {
+        self.list[label].neighbors = None;
+    }
 
     // Edge Modifiers
     /// Add an edge. This is unchecked.
     unsafe fn add_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel) {
-        self.list[from].neighbors.push(to)
+        if let Some(neighbors) = &mut self.list[from].neighbors {
+            neighbors.push(to);
+        }
     }
-
     /// Remove an edge based on its label.
     fn rem_edge(&mut self, from: Self::VertexLabel, to: Self::VertexLabel) {
-        if from < self.list.len() && to < self.list.len() {
-            if let Some(&i) = self.list[from].neighbors.iter().find(|&&x| x == to) {
-                self.list[from].neighbors.remove(i);
+        if let Some(neighbors) = &mut self.list[from].neighbors {
+            if let Some(&i) = neighbors.iter().find(|&&x| x == to) {
+                neighbors.remove(i);
             }
         }
     }
@@ -70,11 +69,15 @@ impl Storage for AdjacencyList {
     // Accessors
     /// Return true if and only if the graph contains the specified vertex label.
     fn has_vertex(&self, label: Self::VertexLabel) -> bool {
-        label < self.list.len()
+        self.list[label].neighbors.is_some()
     }
     /// Return true if and only if the graph contains the specified edge label.
     fn has_edge(&self, from: Self::VertexLabel, to: Self::VertexLabel) -> bool {
-        self.list[from].neighbors.contains(&to)
+        if let Some(neighbors) = &self.list[from].neighbors {
+            neighbors.contains(&to)
+        } else {
+            false
+        }
     }
 
     // Basic Iterators
@@ -83,6 +86,7 @@ impl Storage for AdjacencyList {
         self.list
             .iter()
             .enumerate()
+            .filter(|(_, x)| x.neighbors.is_some())
             .map(|(i, _)| i)
     }
     /// Iterate over edges by label.
@@ -92,16 +96,18 @@ impl Storage for AdjacencyList {
         self.list
             .iter()
             .enumerate()
-            .map(|(u, x)| x.neighbors.iter().map(move |&v| (u, v)))
+            .filter(|(_, x)| x.neighbors.is_some())
+            .map(|(u, x)| x.neighbors.as_ref().unwrap().iter().map(move |&v| (u, v)))
             .flatten()
     }
     /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,
         vertex: usize,
-    ) -> impl Iterator<Item = Self::VertexLabel> + 'a {
+    ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a> {
         self.list[vertex]
             .neighbors
-            .iter().cloned()
+            .as_ref()
+            .map(|neighbors| neighbors.iter().map(|&x| x))
     }
 }
