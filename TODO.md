@@ -28,6 +28,8 @@
 - [ ] Actual `GraphFormat` Error Types
 - [ ] Implement Modified DIMACS Writer
 - [ ] Implement Real DIMACS Formatting
+- [ ] Vertex removal is slow, add an `InducedSubgraph` type
+  - Replace `rem_vertex` entirely? Probably, since testing for vertex membership causes slowdowns elsewhere.
 - [ ] Augment Graphs with Auxilliary Data Structures
   - [ ] Q: How to do this w/ zero cost?
   - [ ] Q: Use this to abstract away degrees?

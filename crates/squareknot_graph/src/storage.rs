@@ -35,8 +35,6 @@ pub trait Storage: Sized {
             self.add_vertex();
         }
     }
-    /// Remove a vertex by its label.
-    fn rem_vertex(&mut self, label: Self::VertexLabel);
 
     // Edge Modifiers
     /// Add an edge. This is unsafe since it can produce multi-edges.
@@ -64,5 +62,5 @@ pub trait Storage: Sized {
     fn neighbor_iterator<'a>(
         &'a self,
         vertex: usize,
-    ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a>;
+    ) -> impl Iterator<Item = Self::VertexLabel> + 'a;
 }
