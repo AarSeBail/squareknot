@@ -1,15 +1,15 @@
-use squareknot_graph::AbstractGraph;
+use squareknot_graph::{ExactCombinator, ViewCombinator};
 
 use crate::{recycle::BFSResources, TraversalNode};
 
-pub struct BFSFullTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
+pub struct BFSFullTraversal<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> {
     pub(crate) graph: &'a G,
     pub(crate) visited: Vec<bool>,
     pub(crate) queue: Vec<TraversalNode>,
     pub(crate) vertex_order: Box<dyn Iterator<Item = usize> + 'a>,
 }
 
-impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSFullTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSFullTraversal<'a, G> {
     pub fn new(graph: &'a G) -> Self {
         Self {
             graph,
@@ -36,7 +36,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> BFSFullTraversal<'a, G> {
     }
 }
 
-impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for BFSFullTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for BFSFullTraversal<'a, G> {
     type Item = TraversalNode;
 
     fn next(&mut self) -> Option<Self::Item> {

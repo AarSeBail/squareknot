@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use crate::{
-    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, RBFSTraversal, TraversalGraph,
+    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, RBFSTraversal, TraversalView as TraversalView,
     TraversalNode,
 };
 
@@ -25,7 +25,7 @@ impl BFSResources {
         (v, q)
     }
 
-    pub fn bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> BFSTraversal<G> {
+    pub fn bfs<G: TraversalView>(self, graph: &G, root: usize) -> BFSTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         BFSTraversal {
@@ -35,7 +35,7 @@ impl BFSResources {
         }
     }
 
-    pub fn full_bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> BFSFullTraversal<G> {
+    pub fn full_bfs<G: TraversalView>(self, graph: &G, root: usize) -> BFSFullTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         BFSFullTraversal {
@@ -67,7 +67,7 @@ impl DFSResources {
         (v, q)
     }
 
-    pub fn bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> DFSTraversal<G> {
+    pub fn bfs<G: TraversalView>(self, graph: &G, root: usize) -> DFSTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         DFSTraversal {
@@ -77,7 +77,7 @@ impl DFSResources {
         }
     }
 
-    pub fn full_bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> DFSFullTraversal<G> {
+    pub fn full_bfs<G: TraversalView>(self, graph: &G, root: usize) -> DFSFullTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         DFSFullTraversal {
@@ -109,7 +109,7 @@ impl RBFSResources {
         (v, q)
     }
 
-    pub fn bfs<G: TraversalGraph>(self, graph: &G, root: usize) -> RBFSTraversal<G> {
+    pub fn bfs<G: TraversalView>(self, graph: &G, root: usize) -> RBFSTraversal<G> {
         let (v, q) = self.reset(graph.num_v_labels(), root);
 
         RBFSTraversal {

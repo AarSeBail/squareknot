@@ -15,7 +15,7 @@ members = [
     "crates/squareknot_pathing",
     "crates/squareknot_traversal",
     "crates/squareknot_internal",
-    "benches",
+    "benches", "crates/graph_constructors",
 ]
 exclude = ["integration_tests"]
 
@@ -31,3 +31,6 @@ traversal = ["squareknot_internal/traversal"]
 pathing = ["squareknot_internal/pathing", "traversal"]
 metadata = ["squareknot_internal/metadata"]
 planarity = ["squareknot_internal/planarity"]
+
+[dev-dependencies]
+rand = "0.9.0"

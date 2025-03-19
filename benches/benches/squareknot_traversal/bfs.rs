@@ -4,7 +4,7 @@ use benches::bench;
 use criterion::{Criterion, criterion_group};
 use rand::Rng;
 use squareknot_graph::{AbstractGraph, SimpleGraph};
-use squareknot_traversal::TraversalGraph;
+use squareknot_traversal::TraversalView;
 
 criterion_group!(benches, traverse_component_1000);
 
@@ -30,7 +30,7 @@ fn traverse_component_1000(c: &mut Criterion) {
                 for _i in 0..iters {
                     let g = gen_graph(1000, p);
                     let start = Instant::now();
-                    g.bfs(0).count();
+                    g.view().bfs(0).count();
                     total += start.elapsed();
                 }
                 total

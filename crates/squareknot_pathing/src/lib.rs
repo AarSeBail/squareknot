@@ -1,13 +1,12 @@
 //! This crate contains functionality related to graph paths.
 
-use squareknot_graph::AbstractGraph;
-use squareknot_traversal::TraversalGraph;
+use squareknot_traversal::TraversalView;
 
-pub trait PathingGraph: AbstractGraph<VertexLabel = usize> {
+pub trait PathingGraph: TraversalView {
     fn shortest_path(graph: &Self, u: usize, v: usize) -> Result<Vec<usize>, ()>;
 }
 
-impl<G: TraversalGraph> PathingGraph for G {
+impl<G: TraversalView> PathingGraph for G {
     fn shortest_path(graph: &Self, u: usize, v: usize) -> Result<Vec<usize>, ()> {
         let mut stack = vec![];
         let bfs = graph.bfs(u);

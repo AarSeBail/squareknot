@@ -1,16 +1,16 @@
-use squareknot_graph::AbstractGraph;
+use squareknot_graph::{ExactCombinator, ViewCombinator};
 
 use std::collections::VecDeque;
 
 use crate::{recycle::DFSResources, TraversalNode};
 
-pub struct DFSTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
+pub struct DFSTraversal<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> {
     pub(crate) graph: &'a G,
     pub(crate) visited: Vec<bool>,
     pub(crate) queue: VecDeque<TraversalNode>,
 }
 
-impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> DFSTraversal<'a, G> {
     pub fn new(graph: &'a G, root: usize) -> Self {
         let mut visited = vec![false; graph.num_v_labels()];
         visited[root] = true;
@@ -52,7 +52,7 @@ impl<'a, G: AbstractGraph<VertexLabel = usize>> DFSTraversal<'a, G> {
     }
 }
 
-impl<'a, G: AbstractGraph<VertexLabel = usize>> Iterator for DFSTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for DFSTraversal<'a, G> {
     type Item = TraversalNode;
 
     fn next(&mut self) -> Option<Self::Item> {
