@@ -60,13 +60,8 @@ pub trait Storage: Sized {
 
     /// Iterate over edges by label.
     /// This iterator may have duplicates.
-    fn edge_iterator<'a>(
-        &'a self,
-    ) -> impl Iterator<Item = (usize, usize)> + 'a;
+    fn edge_iterator<'a>(&'a self) -> impl Iterator<Item = (usize, usize)> + 'a;
 
     /// Iterate over neighbors of `vertex` by label.
-    fn neighbor_iterator<'a>(
-        &'a self,
-        vertex: usize,
-    ) -> impl Iterator<Item = usize> + 'a;
+    fn neighbor_iterator<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a;
 }

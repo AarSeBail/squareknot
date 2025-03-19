@@ -1,7 +1,8 @@
 use std::collections::VecDeque;
 
 use crate::{
-    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, RBFSTraversal, TraversalGraph, TraversalNode
+    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, RBFSTraversal, TraversalGraph,
+    TraversalNode,
 };
 
 pub struct BFSResources {

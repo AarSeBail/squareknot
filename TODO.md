@@ -1,32 +1,77 @@
-# Algorithms
-- [X] Depth First Iterator
-- [X] Breadth First Iterator
-- [ ] Greedy Coloring Algorithms
-  - Requires metadata first
-- [ ] Other Coloring Algorithms
-- [X] Union Find
-- [ ] Components and Component Counts
-- [ ] Eulerian Cycle/Circuit
-- [X] All Pairs Shortest Paths Iterator - Unweighted
-- [ ] Adjacency Matrix
+# Storage
+- [X] Adjacency List
+- [X] Adjacency Matrix
 - [ ] Laplacian Matrix
-- [ ] Bron-Kerbosch Algorithm
-- [ ] Isomorphism Testing and Construction
+
+# Traversal
+- [X] Depth First Iterator
+  - [X] Full Traversal
+- [X] Breadth First Iterator
+  - [X] Full Traversal
+  - [X] Recording Traversal
+- [X] Components and Component Counts
+
+# Combinators
+- [ ] Revamp Combinator System
+  - Brainstorming: Want functions f:GraphLike -> GraphLike
+  - Do not want the functions to be GraphLike
+  - Want the functions to be applicable to both GraphLike and AbstractGraph
+- [ ] Create `ExactVertexSize` trait
+  - Adds extra methods to allow implementations to inform consumers of the number of labels used
+- [ ] Create `ExactEdgeSize` trait
+  - Same as `ExactVertexSize`
+- [ ] Create `UnGraphLike` trait
+  - Acts as an invariant to let users know that implementations are intended to be undirected
+- [ ] Make `squareknot_io` use `GraphLike` and additional traits when applicable
+
+# Graph Metadata
+- [ ] Design Metadata System
+
+# Pathing
+- [X] Shortest Path - Undirected
+- [ ] Eulerian Cycle/Circuit
+- [ ] All Pairs Shortest Paths Iterator - Unweighted
 - [ ] K-Shortest Disjoint Paths
-- [ ] Boyer-Myrvold Algorithm
-- [ ] Automorphism Algorithms
-## Directed/Weighted Graphs
 - [ ] Dijkstra's Algorithm
 - [ ] Johnson's Algorithm
-- [ ] Kruskal's Algorithm
+- [ ] Best Path Approximation w/ Simulated Annealing
+
+# Network Flow
 - [ ] Edmonds-Karp Algorithm
-## Topological Structures
-- [ ] Gluing maps of polygons
-- [ ] More general structures?
+
+# Algebra
+- [ ] Isomorphism Testing and Construction
+- [ ] Automorphism Algorithms
+
+# Cliques
+- [ ] Bron-Kerbosch Algorithm
+
+# Planarity
+- [ ] Rotational Systems
+- [ ] Hopcroft-Tarjan
+- [ ] Boyer-Myrvold
+
+# Coloring
+- [ ] Greedy Coloring Algorithms
+- [ ] Other Coloring Algorithms
+
+# Other
+- [ ] Union Find
+- [ ] Kruskal's Algorithm
+
+# Topology
+- [ ] Gluing Maps
+- [ ] Cell Complex
+  - [ ] Simplicial Complex
+
+# Topological Embeddings
+- [ ] Rotational Systems
+- [ ] Exponential Embedding Algorithm
+- [ ] Polynomial Embedding Algorithm
 
 # Utilities
 - [ ] Actual `GraphFormat` Error Types
-- [ ] Implement Modified DIMACS Writer
+- [X] Implement Modified DIMACS Writer
 - [ ] Implement Real DIMACS Formatting
 - [X] Vertex removal is slow, add an `InducedSubgraph` type
   - Replace `rem_vertex` entirely? Probably, since testing for vertex membership causes slowdowns elsewhere.
@@ -39,7 +84,7 @@
 - [ ] Documentation
 - [ ] Feature flags for auxilliary data, weighted graphs, etc.
   - [ ] Additional feature flags?
-- [ ] Integration Testing
+- [X] Integration Testing
 - [X] Having `neighbor_iter` instead of `neighbors` would be faster for adjacency matrices, due to no heap allocation.
   - [X] Q: How to do the types for this? Probably use associated types... A: Just use ``impl Iterator<Item = usize>``.
 - [ ] Conversion b/w Storage Types
@@ -51,3 +96,4 @@
 
 # Documentation
 - [ ] Further clarify the differences between `Storage` and `AbstractGraph`
+- [ ] Write better documentation

@@ -15,7 +15,6 @@ members = [
     "crates/squareknot_pathing",
     "crates/squareknot_traversal",
     "crates/squareknot_internal",
-    "crates/squareknot_combinators",
     "benches",
 ]
 exclude = ["integration_tests"]
@@ -24,12 +23,11 @@ exclude = ["integration_tests"]
 squareknot_internal = { path = "crates/squareknot_internal" }
 
 [features]
-default = ["io", "embedding", "traversal", "pathing", "metadata", "combinators", "planarity"]
+default = ["io", "embedding", "traversal", "pathing", "metadata", "planarity"]
 
 io = ["squareknot_internal/io"]
 embedding = ["squareknot_internal/planarity"]
 traversal = ["squareknot_internal/traversal"]
 pathing = ["squareknot_internal/pathing", "traversal"]
 metadata = ["squareknot_internal/metadata"]
-combinators = ["squareknot_internal/combinators"]
 planarity = ["squareknot_internal/planarity"]

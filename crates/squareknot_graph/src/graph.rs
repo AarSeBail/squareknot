@@ -1,7 +1,9 @@
 use std::hash::Hash;
 
+use crate::GraphView;
+
 /// Abstract trait for labeled graphs
-/// 
+///
 /// A few things to note about the behavior of `AbstractGraph`
 ///
 /// - Both edges and vertices have labels.
@@ -73,6 +75,10 @@ pub trait AbstractGraph: Sized {
     /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,
-        vertex: usize,
+        vertex: Self::VertexLabel,
     ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a>;
+
+    fn view(&self) -> GraphView<Self> {
+        GraphView::build(self)
+    }
 }

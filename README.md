@@ -14,7 +14,7 @@ squareknot = { git = https://github.com/AarSeBail/squareknot.git, commit = "X" }
 
 ## Documentation
 
-Documentation may be viewed with ``cargo doc --workspace --open``.
+Documentation may be viewed with ``cargo doc --workspace --exclude benches --open``.
 
 ## Show me around
 

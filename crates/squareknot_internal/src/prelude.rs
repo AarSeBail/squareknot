@@ -1,3 +1,3 @@
-pub use squareknot_graph::*;
+pub use super::graph::*;
 #[cfg(feature = "traversal")]
-pub use squareknot_traversal::*;
+pub use super::traversal::*;
