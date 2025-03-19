@@ -13,7 +13,7 @@ fn quotient_map() {
         map[v] = map[u];
     }
 
-    let quotient = graph.map_vertices(|v| map[v]);
+    let quotient = graph.view().map_vertices(|&v| map[v]);
 
     let r = quotient.edge_iterator().collect::<Vec<_>>();
     let v = quotient.vertex_iterator().collect::<Vec<_>>();

@@ -85,9 +85,7 @@ impl Storage for AdjacencyList {
     }
 
     /// Iterate over edges by label.
-    fn edge_iterator<'a>(
-        &'a self,
-    ) -> impl Iterator<Item = (usize, usize)> + 'a {
+    fn edge_iterator<'a>(&'a self) -> impl Iterator<Item = (usize, usize)> + 'a {
         self.list
             .iter()
             .enumerate()
@@ -96,10 +94,7 @@ impl Storage for AdjacencyList {
     }
 
     /// Iterate over neighbors of `vertex` by label.
-    fn neighbor_iterator<'a>(
-        &'a self,
-        vertex: usize,
-    ) -> impl Iterator<Item = usize> + 'a {
+    fn neighbor_iterator<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a {
         self.list[vertex].neighbors.iter().cloned()
     }
 }

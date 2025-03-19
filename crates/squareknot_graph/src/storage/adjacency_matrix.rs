@@ -76,9 +76,7 @@ impl Storage for AdjacencyMatrix {
     }
 
     /// Iterate over edges by label.
-    fn edge_iterator<'a>(
-        &'a self,
-    ) -> impl Iterator<Item = (usize, usize)> + 'a {
+    fn edge_iterator<'a>(&'a self) -> impl Iterator<Item = (usize, usize)> + 'a {
         let nv = self.matrix.nrows();
         (0..nv)
             .map(move |u| {
@@ -88,12 +86,9 @@ impl Storage for AdjacencyMatrix {
             })
             .flatten()
     }
-    
+
     /// Iterate over neighbors of `vertex` by label.
-    fn neighbor_iterator<'a>(
-        &'a self,
-        vertex: usize,
-    ) -> impl Iterator<Item = usize> + 'a {
+    fn neighbor_iterator<'a>(&'a self, vertex: usize) -> impl Iterator<Item = usize> + 'a {
         let nv = self.matrix.nrows();
         (0..nv).filter(move |&v| self.matrix[(vertex, v)] == 1)
     }

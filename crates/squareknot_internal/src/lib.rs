@@ -17,7 +17,4 @@ pub use squareknot_pathing as pathing;
 #[cfg(feature = "planarity")]
 pub use squareknot_planarity as planarity;
 
-#[cfg(feature = "combinators")]
-pub use squareknot_combinators as combinators;
-
 pub mod prelude;

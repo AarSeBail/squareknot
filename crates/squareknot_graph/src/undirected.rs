@@ -50,7 +50,7 @@ impl<S: Storage> AbstractGraph for UnGraph<S> {
     fn add_labeled_vertex(&mut self, label: Self::VertexLabel) -> bool {
         if label < self.storage.num_v_labels() {
             false
-        }else {
+        } else {
             self.add_vertices(label - self.storage.num_v_labels() + 1);
             true
         }
@@ -114,7 +114,7 @@ impl<S: Storage> AbstractGraph for UnGraph<S> {
     ) -> impl Iterator<Item = (Self::VertexLabel, Self::VertexLabel)> + 'a {
         self.storage.edge_iterator()
     }
-    
+
     /// Iterate over neighbors of `vertex` by label.
     fn neighbor_iterator<'a>(
         &'a self,

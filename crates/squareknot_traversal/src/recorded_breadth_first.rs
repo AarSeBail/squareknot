@@ -1,6 +1,6 @@
 use squareknot_graph::AbstractGraph;
 
-use crate::{TraversalNode, recycle::RBFSResources};
+use crate::{recycle::RBFSResources, TraversalNode};
 
 pub struct RBFSTraversal<'a, G: AbstractGraph<VertexLabel = usize>> {
     pub(crate) graph: &'a G,
