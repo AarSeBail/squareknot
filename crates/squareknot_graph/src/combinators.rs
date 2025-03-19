@@ -1,6 +1,6 @@
 // Issues with dynamic return typing right now
-// pub mod vertex_map;
-// pub use vertex_map::*;
+pub mod vertex_map;
+pub use vertex_map::*;
 
 pub mod vertex_filter;
 pub use vertex_filter::*;
@@ -44,9 +44,9 @@ pub trait ViewCombinator: Sized {
         VertexFilter::build(self, f)
     }
 
-    /* fn map_vertices<V: Copy + Hash + Eq, F: Fn(&Self::VertexLabel) -> V>(self, f: F) -> VertexMap<Self, V, F> {
+    fn map_vertices<V: Copy + Hash + Eq, F: Fn(&Self::VertexLabel) -> V>(self, f: F) -> VertexMap<Self, V, F> {
         VertexMap::build(self, f)
-    }*/ 
+    }
 
     fn compact(self) -> VertexCompactor<Self> {
         VertexCompactor::build(self)

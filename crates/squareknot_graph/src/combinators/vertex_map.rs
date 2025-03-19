@@ -41,20 +41,16 @@ impl<G: ViewCombinator, V: Copy + Hash + Eq, F: Fn(&G::VertexLabel) -> V> ViewCo
     fn neighbor_iterator<'a>(
         &'a self,
         vertex: Self::VertexLabel
-    ) -> Option<Box<dyn Iterator<Item = Self::VertexLabel> + 'a>> {
-        let upstream = self.preimage.vertex_iterator()
-            .filter(|u| (self.f)(u) == vertex);
-        // Empty iff vertex is not contained in the map
-        let first = upstream.next();
-        if first.is_none() {
+    ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a> {
+        if !self.preimage.vertex_iterator().any(|u| (self.f)(&u) == vertex) {
             return None;
         }
-        let itr = upstream.filter_map(|v| self.preimage.neighbor_iterator(v)).flatten();
-        if let Some(f) = self.preimage.neighbor_iterator(first.unwrap()) {
-            Some(Box::new(itr.chain(f)))
-        }else {
-            Some(Box::new(itr))
-        }
+        let upstream = self.preimage.vertex_iterator()
+            .filter(move |u| (self.f)(u) == vertex);
+        Some(
+            upstream.filter_map(|v| self.preimage.neighbor_iterator(v))
+                .flatten().map(|v| (self.f)(&v))
+        )
     }
 }
 
