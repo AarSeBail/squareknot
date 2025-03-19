@@ -216,6 +216,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "graph_constructors"
+version = "0.1.0"
+
+[[package]]
 name = "half"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -616,6 +620,7 @@ dependencies = [
 name = "squareknot"
 version = "0.1.0"
 dependencies = [
+ "rand",
  "squareknot_internal",
 ]
 

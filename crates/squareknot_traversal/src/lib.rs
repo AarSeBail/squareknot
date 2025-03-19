@@ -17,7 +17,7 @@ pub use recorded_breadth_first::*;
 
 pub mod recycle;
 
-use squareknot_graph::AbstractGraph;
+use squareknot_graph::{ExactCombinator, ViewCombinator};
 
 pub struct TraversalNode {
     pub vertex: usize,
@@ -25,7 +25,7 @@ pub struct TraversalNode {
 }
 
 /// Trait implementing traversal methods on graphs with `usize` vertices
-pub trait TraversalGraph: AbstractGraph<VertexLabel = usize> {
+pub trait TraversalView: ViewCombinator<VertexLabel = usize> + ExactCombinator {
     /// Traverses the graph starting from `root`.
     fn bfs(&self, root: usize) -> BFSTraversal<Self> {
         BFSTraversal::new(self, root)
@@ -56,4 +56,4 @@ pub trait TraversalGraph: AbstractGraph<VertexLabel = usize> {
     }
 }
 
-impl<G: AbstractGraph<VertexLabel = usize>> TraversalGraph for G {}
+impl<G: ViewCombinator<VertexLabel = usize> + ExactCombinator> TraversalView for G {}

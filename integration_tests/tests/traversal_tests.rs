@@ -6,7 +6,8 @@ fn bfs_comp_count() {
     // &[u8] implements BufRead, which is required by parse_graph()
     let graph: SimpleGraph = FakeDimacs::parse_graph(g.as_bytes()).expect("Could not parse graph.");
 
-    let dfs = graph.full_bfs();
+    let view = graph.view();
+    let dfs = view.full_bfs();
     let ncomp = dfs
         .map(|x| {
             println!("{}", x.depth);
@@ -25,7 +26,8 @@ fn dfs_comp_count() {
     // &[u8] implements BufRead, which is required by parse_graph()
     let graph: SimpleGraph = FakeDimacs::parse_graph(g.as_bytes()).expect("Could not parse graph.");
 
-    let dfs = graph.full_dfs();
+    let view = graph.view();
+    let dfs = view.full_dfs();
     let ncomp = dfs
         .map(|x| {
             println!("{}", x.depth);
