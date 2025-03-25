@@ -1,24 +1,24 @@
 use std::collections::VecDeque;
 
 use crate::{
-    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, RBFSTraversal, TraversalView as TraversalView,
+    BFSFullTraversal, BFSTraversal, DFSFullTraversal, DFSTraversal, TraversalView as TraversalView,
     TraversalNode,
 };
 
 pub struct BFSResources {
-    pub(crate) visited: Option<Vec<bool>>,
-    pub(crate) queue: Option<Vec<TraversalNode>>,
+    pub(crate) visited: Option<Vec<usize>>,
+    pub(crate) queue: Option<VecDeque<TraversalNode>>,
 }
 
 impl BFSResources {
-    fn reset(mut self, new_size: usize, new_root: usize) -> (Vec<bool>, Vec<TraversalNode>) {
+    fn reset(mut self, new_size: usize, new_root: usize) -> (Vec<usize>, VecDeque<TraversalNode>) {
         let mut v = self.visited.take().unwrap();
         let mut q = self.queue.take().unwrap();
-        v.fill(false);
-        v.resize(new_size, false);
+        v.fill(usize::MAX);
+        v.resize(new_size, usize::MAX);
 
         q.clear();
-        q.push(TraversalNode {
+        q.push_back(TraversalNode {
             vertex: new_root,
             depth: 0,
         });
@@ -30,7 +30,7 @@ impl BFSResources {
 
         BFSTraversal {
             graph,
-            visited: v,
+            parents: v,
             queue: q,
         }
     }
@@ -40,7 +40,7 @@ impl BFSResources {
 
         BFSFullTraversal {
             graph,
-            visited: v,
+            parents: v,
             queue: q,
             vertex_order: Box::new(graph.vertex_iterator()),
         }
@@ -48,19 +48,19 @@ impl BFSResources {
 }
 
 pub struct DFSResources {
-    pub(crate) visited: Option<Vec<bool>>,
-    pub(crate) queue: Option<VecDeque<TraversalNode>>,
+    pub(crate) visited: Option<Vec<usize>>,
+    pub(crate) stack: Option<Vec<TraversalNode>>,
 }
 
 impl DFSResources {
-    fn reset(mut self, new_size: usize, new_root: usize) -> (Vec<bool>, VecDeque<TraversalNode>) {
+    fn reset(mut self, new_size: usize, new_root: usize) -> (Vec<usize>, Vec<TraversalNode>) {
         let mut v = self.visited.take().unwrap();
-        let mut q = self.queue.take().unwrap();
-        v.fill(false);
-        v.resize(new_size, false);
+        let mut q = self.stack.take().unwrap();
+        v.fill(usize::MAX);
+        v.resize(new_size, usize::MAX);
 
         q.clear();
-        q.push_back(TraversalNode {
+        q.push(TraversalNode {
             vertex: new_root,
             depth: 0,
         });
@@ -73,7 +73,7 @@ impl DFSResources {
         DFSTraversal {
             graph,
             visited: v,
-            queue: q,
+            stack: q,
         }
     }
 
@@ -83,39 +83,8 @@ impl DFSResources {
         DFSFullTraversal {
             graph,
             visited: v,
-            queue: q,
+            stack: q,
             vertex_order: Box::new(graph.vertex_iterator()),
-        }
-    }
-}
-
-pub struct RBFSResources {
-    pub(crate) parents: Option<Vec<usize>>,
-    pub(crate) queue: Option<Vec<TraversalNode>>,
-}
-
-impl RBFSResources {
-    fn reset(mut self, new_size: usize, new_root: usize) -> (Vec<usize>, Vec<TraversalNode>) {
-        let mut v = self.parents.take().unwrap();
-        let mut q = self.queue.take().unwrap();
-        v.fill(usize::MAX);
-        v.resize(new_size, usize::MAX);
-
-        q.clear();
-        q.push(TraversalNode {
-            vertex: new_root,
-            depth: 0,
-        });
-        (v, q)
-    }
-
-    pub fn bfs<G: TraversalView>(self, graph: &G, root: usize) -> RBFSTraversal<G> {
-        let (v, q) = self.reset(graph.num_v_labels(), root);
-
-        RBFSTraversal {
-            graph,
-            parents: v,
-            queue: q,
         }
     }
 }

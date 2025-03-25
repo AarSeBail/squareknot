@@ -1,21 +1,24 @@
+use std::collections::VecDeque;
+
 use squareknot_graph::{ExactCombinator, ViewCombinator};
 
 use crate::{recycle::BFSResources, TraversalNode};
 
 pub struct BFSTraversal<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> {
     pub(crate) graph: &'a G,
-    pub(crate) visited: Vec<bool>,
-    pub(crate) queue: Vec<TraversalNode>,
+    pub(crate) parents: Vec<usize>,
+    pub(crate) queue: VecDeque<TraversalNode>,
 }
 
 impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<'a, G> {
     pub fn new(graph: &'a G, root: usize) -> Self {
-        let mut visited = vec![false; graph.num_v_labels()];
-        visited[root] = true;
+        let mut parents = vec![usize::MAX; graph.num_v_labels()];
+        parents[root] = root;
+
         Self {
             graph,
-            visited,
-            queue: Vec::from(vec![TraversalNode {
+            parents,
+            queue: VecDeque::from(vec![TraversalNode {
                 vertex: root,
                 depth: 0,
             }]),
@@ -25,16 +28,17 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
     /// Extracts [`BFSResources`] which may be recycled into a new [`BFSTraversal`] or [`super::BFSFullTraversal`]
     pub fn extract_resources(self) -> BFSResources {
         BFSResources {
-            visited: Some(self.visited),
+            visited: Some(self.parents),
             queue: Some(self.queue),
         }
     }
 
     pub fn restart_at(&mut self, root: usize) {
-        self.visited.fill(false);
+        self.parents.fill(usize::MAX);
+        self.parents[root] = root;
 
         self.queue.clear();
-        self.queue.push(TraversalNode {
+        self.queue.push_back(TraversalNode {
             vertex: root,
             depth: 0,
         });
@@ -42,10 +46,10 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
 
     /// Iterate over the vertices in the graph which have been traversed
     pub fn traversed_iter<'b>(&'b self) -> impl Iterator<Item = usize> + 'b {
-        self.visited
+        self.parents
             .iter()
             .enumerate()
-            .filter(|(_, &x)| x)
+            .filter(|(_, &x)| x != usize::MAX)
             .map(|(i, _)| i)
     }
 }
@@ -54,13 +58,13 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
     type Item = TraversalNode;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some(current_node) = self.queue.pop() {
+        if let Some(current_node) = self.queue.pop_front() {
             // Accept both types of Neighbors and create a slice from them.
             let neighbors = self.graph.neighbor_iterator(current_node.vertex).unwrap();
             for neighbor in neighbors {
-                if !self.visited[neighbor] {
-                    self.visited[neighbor] = true;
-                    self.queue.push(TraversalNode {
+                if self.parents[neighbor] == usize::MAX {
+                    self.parents[neighbor] = current_node.vertex;
+                    self.queue.push_back(TraversalNode {
                         vertex: neighbor,
                         depth: current_node.depth + 1,
                     });

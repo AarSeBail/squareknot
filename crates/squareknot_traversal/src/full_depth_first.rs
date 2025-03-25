@@ -1,13 +1,11 @@
-use std::collections::VecDeque;
-
 use squareknot_graph::{ExactCombinator, ViewCombinator};
 
 use crate::{recycle::DFSResources, TraversalNode};
 
 pub struct DFSFullTraversal<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> {
     pub(crate) graph: &'a G,
-    pub(crate) visited: Vec<bool>,
-    pub(crate) queue: VecDeque<TraversalNode>,
+    pub(crate) visited: Vec<usize>,
+    pub(crate) stack: Vec<TraversalNode>,
     pub(crate) vertex_order: Box<dyn Iterator<Item = usize> + 'a>,
 }
 
@@ -15,8 +13,8 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> DFSFullTraver
     pub fn new(graph: &'a G) -> Self {
         Self {
             graph,
-            visited: vec![false; graph.num_v_labels()],
-            queue: VecDeque::new(),
+            visited: vec![usize::MAX; graph.num_v_labels()],
+            stack: Vec::new(),
             vertex_order: Box::new(graph.vertex_iterator()),
         }
     }
@@ -25,7 +23,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> DFSFullTraver
     pub fn extract_resources(self) -> DFSResources {
         DFSResources {
             visited: Some(self.visited),
-            queue: Some(self.queue),
+            stack: Some(self.stack),
         }
     }
 
@@ -34,7 +32,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> DFSFullTraver
         self.visited
             .iter()
             .enumerate()
-            .filter(|(_, &x)| x)
+            .filter(|(_, &x)| x != usize::MAX)
             .map(|(i, _)| i)
     }
 }
@@ -44,13 +42,13 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
-            if let Some(current_node) = self.queue.pop_front() {
+            if let Some(current_node) = self.stack.pop() {
                 // Accept both types of Neighbors and create a slice from them.
                 let neighbors = self.graph.neighbor_iterator(current_node.vertex).unwrap();
                 for neighbor in neighbors {
-                    if !self.visited[neighbor] {
-                        self.visited[neighbor] = true;
-                        self.queue.push_back(TraversalNode {
+                    if self.visited[neighbor] == usize::MAX {
+                        self.visited[neighbor] = current_node.vertex;
+                        self.stack.push(TraversalNode {
                             vertex: neighbor,
                             depth: current_node.depth + 1,
                         });
@@ -60,17 +58,17 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
             } else {
                 // Find next unvisited vertex for full traversal
                 while let Some(v) = self.vertex_order.next() {
-                    if self.visited[v] {
+                    if self.visited[v] != usize::MAX {
                         continue;
                     }
-                    self.visited[v] = true;
-                    self.queue.push_back(TraversalNode {
+                    self.visited[v] = v;
+                    self.stack.push(TraversalNode {
                         vertex: v,
                         depth: 0,
                     });
                     break;
                 }
-                if self.queue.is_empty() {
+                if self.stack.is_empty() {
                     return None;
                 }
             }

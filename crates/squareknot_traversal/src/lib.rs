@@ -12,9 +12,6 @@ pub use depth_first::*;
 pub mod full_depth_first;
 pub use full_depth_first::*;
 
-pub mod recorded_breadth_first;
-pub use recorded_breadth_first::*;
-
 pub mod recycle;
 
 use squareknot_graph::{ExactCombinator, ViewCombinator};
@@ -44,11 +41,6 @@ pub trait TraversalView: ViewCombinator<VertexLabel = usize> + ExactCombinator {
     /// Creates a full traversal of the graph starting from first vertex from the graph (See [`AbstractGraph::vertex_iterator`]).
     fn full_dfs(&self) -> DFSFullTraversal<Self> {
         DFSFullTraversal::new(self)
-    }
-
-    /// Traverses the graph starting from `root` and recording the traversal as a tree.
-    fn recorded_bfs(&self, root: usize) -> RBFSTraversal<Self> {
-        RBFSTraversal::new(self, root)
     }
 
     fn component_count(&self) -> usize {
