@@ -7,6 +7,7 @@ pub trait PathingGraph: TraversalView {
 }
 
 impl<G: TraversalView> PathingGraph for G {
+    // TODO: This is no longer the best way to do this
     fn shortest_path(graph: &Self, u: usize, v: usize) -> Result<Vec<usize>, ()> {
         let mut stack = vec![];
         let bfs = graph.bfs(u);
