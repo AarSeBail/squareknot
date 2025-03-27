@@ -1,4 +1,3 @@
-// Issues with dynamic return typing right now
 pub mod vertex_map;
 pub use vertex_map::*;
 
