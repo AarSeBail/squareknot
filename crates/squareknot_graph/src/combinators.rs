@@ -32,10 +32,13 @@ pub trait ViewCombinator: Sized {
 
     fn neighbor_iterator<'a>(
         &'a self,
-        vertex: Self::VertexLabel
+        vertex: Self::VertexLabel,
     ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a>;
 
-    fn filter_edges<F: Fn(&(Self::VertexLabel, Self::VertexLabel)) -> bool>(self, f: F) -> EdgeFilter<Self, F> {
+    fn filter_edges<F: Fn(&(Self::VertexLabel, Self::VertexLabel)) -> bool>(
+        self,
+        f: F,
+    ) -> EdgeFilter<Self, F> {
         EdgeFilter::build(self, f)
     }
 
@@ -43,7 +46,10 @@ pub trait ViewCombinator: Sized {
         VertexFilter::build(self, f)
     }
 
-    fn map_vertices<V: Copy + Hash + Eq, F: Fn(&Self::VertexLabel) -> V>(self, f: F) -> VertexMap<Self, V, F> {
+    fn map_vertices<V: Copy + Hash + Eq, F: Fn(&Self::VertexLabel) -> V>(
+        self,
+        f: F,
+    ) -> VertexMap<Self, V, F> {
         VertexMap::build(self, f)
     }
 

@@ -21,6 +21,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
             queue: VecDeque::from(vec![TraversalNode {
                 vertex: root,
                 depth: 0,
+                parent: root,
             }]),
         }
     }
@@ -28,7 +29,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
     /// Extracts [`BFSResources`] which may be recycled into a new [`BFSTraversal`] or [`super::BFSFullTraversal`]
     pub fn extract_resources(self) -> BFSResources {
         BFSResources {
-            visited: Some(self.parents),
+            parents: Some(self.parents),
             queue: Some(self.queue),
         }
     }
@@ -41,6 +42,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
         self.queue.push_back(TraversalNode {
             vertex: root,
             depth: 0,
+            parent: root,
         });
     }
 
@@ -54,12 +56,13 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSTraversal<
     }
 }
 
-impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for BFSTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator
+    for BFSTraversal<'a, G>
+{
     type Item = TraversalNode;
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(current_node) = self.queue.pop_front() {
-            // Accept both types of Neighbors and create a slice from them.
             let neighbors = self.graph.neighbor_iterator(current_node.vertex).unwrap();
             for neighbor in neighbors {
                 if self.parents[neighbor] == usize::MAX {
@@ -67,6 +70,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
                     self.queue.push_back(TraversalNode {
                         vertex: neighbor,
                         depth: current_node.depth + 1,
+                        parent: current_node.vertex,
                     });
                 }
             }

@@ -38,8 +38,9 @@ fn main() {
     // The .full_bfs/.full_dfs methods are methods which restart at the next unvisited node after finishing
     // traversing a component.
     // The node depth is 0 if and only if a new component has started to be traversed
-    let comp_count = split_subgraph.full_bfs().filter(|node| node.depth == 0).count();
+    let comp_count = split_subgraph
+        .full_bfs()
+        .filter(|node| node.depth == 0)
+        .count();
     println!("Even/Odd Component Count: {comp_count}");
-
-    
 }
