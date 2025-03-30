@@ -3,7 +3,10 @@
 use std::io::{stdout, Write};
 
 use rand::{seq::IndexedRandom, Rng};
-use squareknot::{graph::{AbstractGraph, SimpleGraph, ViewCombinator}, prelude::TraversalView};
+use squareknot::{
+    graph::{AbstractGraph, SimpleGraph, ViewCombinator},
+    prelude::TraversalView,
+};
 
 const N: usize = 40;
 
@@ -14,8 +17,10 @@ fn find_kempe_chains(graph: &SimpleGraph, coloring: &[u8], colors: &[u8]) {
             let x = colors[a];
             let y = colors[b];
             println!("Kempe chains with colors {y} and {x}");
-            let subgraph = graph.view().filter_vertices(|&v| coloring[v] == x || coloring[v] == y);
-            
+            let subgraph = graph
+                .view()
+                .filter_vertices(|&v| coloring[v] == x || coloring[v] == y);
+
             let mut started: bool = false;
 
             for node in subgraph.full_dfs() {
@@ -37,7 +42,7 @@ fn find_kempe_chains(graph: &SimpleGraph, coloring: &[u8], colors: &[u8]) {
 
 fn main() {
     let mut graph = SimpleGraph::empty(N);
-    
+
     let mut rng = rand::rng();
 
     for u in 1..N {
@@ -54,6 +59,6 @@ fn main() {
     for i in 0..N {
         coloring[i] = *colors.choose(&mut rng).unwrap();
     }
-    
+
     find_kempe_chains(&graph, &coloring, &colors);
 }

@@ -2,21 +2,14 @@ use std::hash::Hash;
 
 use crate::{ExactCombinator, ViewCombinator};
 
-pub struct VertexMap<
-    G: ViewCombinator,
-    V: Copy + Hash + Eq,
-    F: Fn(&G::VertexLabel) -> V,
-> {
+pub struct VertexMap<G: ViewCombinator, V: Copy + Hash + Eq, F: Fn(&G::VertexLabel) -> V> {
     preimage: G,
     f: F,
 }
 
 impl<'g, G: ViewCombinator, V: Copy + Hash + Eq, F: Fn(&G::VertexLabel) -> V> VertexMap<G, V, F> {
     pub fn build(preimage: G, map: F) -> Self {
-        Self {
-            preimage,
-            f: map
-        }
+        Self { preimage, f: map }
     }
 }
 
@@ -37,19 +30,27 @@ impl<G: ViewCombinator, V: Copy + Hash + Eq, F: Fn(&G::VertexLabel) -> V> ViewCo
             .map(|(u, v)| ((self.f)(&u), (self.f)(&v)))
             .filter(|&(u, v)| u != v)
     }
-    
+
     fn neighbor_iterator<'a>(
         &'a self,
-        vertex: Self::VertexLabel
+        vertex: Self::VertexLabel,
     ) -> Option<impl Iterator<Item = Self::VertexLabel> + 'a> {
-        if !self.preimage.vertex_iterator().any(|u| (self.f)(&u) == vertex) {
+        if !self
+            .preimage
+            .vertex_iterator()
+            .any(|u| (self.f)(&u) == vertex)
+        {
             return None;
         }
-        let upstream = self.preimage.vertex_iterator()
+        let upstream = self
+            .preimage
+            .vertex_iterator()
             .filter(move |u| (self.f)(u) == vertex);
         Some(
-            upstream.filter_map(|v| self.preimage.neighbor_iterator(v))
-                .flatten().map(|v| (self.f)(&v))
+            upstream
+                .filter_map(|v| self.preimage.neighbor_iterator(v))
+                .flatten()
+                .map(|v| (self.f)(&v)),
         )
     }
 }

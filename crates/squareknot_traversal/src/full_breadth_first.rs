@@ -24,7 +24,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSFullTraver
     /// Extracts [`BFSResources`] which may be recycled into a new [`super::BFSTraversal`] or [`BFSFullTraversal`]
     pub fn extract_resources(self) -> BFSResources {
         BFSResources {
-            visited: Some(self.parents),
+            parents: Some(self.parents),
             queue: Some(self.queue),
         }
     }
@@ -38,7 +38,9 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> BFSFullTraver
     }
 }
 
-impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for BFSFullTraversal<'a, G> {
+impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator
+    for BFSFullTraversal<'a, G>
+{
     type Item = TraversalNode;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -52,6 +54,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
                         self.queue.push_back(TraversalNode {
                             vertex: neighbor,
                             depth: current_node.depth + 1,
+                            parent: current_node.vertex,
                         });
                     }
                 }
@@ -65,6 +68,7 @@ impl<'a, G: ViewCombinator<VertexLabel = usize> + ExactCombinator> Iterator for 
                     self.queue.push_back(TraversalNode {
                         vertex: v,
                         depth: 0,
+                        parent: v,
                     });
                     break;
                 }
